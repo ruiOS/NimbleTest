@@ -1,9 +1,5 @@
 name: iOS starter workflow
 
-on:
-  push:
-  pull_request:
-
 jobs:
   build:
     name: Build and Test default scheme using any available iPhone simulator
