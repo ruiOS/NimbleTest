@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, ErrorHandleProtocol {
+class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol {
 
     //MARK: - Views
     ///ImageView on the backGround of the ViewController
@@ -36,7 +36,6 @@ class LoginViewController: UIViewController, ErrorHandleProtocol {
         tempTextField.translatesAutoresizingMaskIntoConstraints = false
         tempTextField.backgroundColor = UIColor(white: 1, alpha: 0.18)
         tempTextField.font = UIFont.loginTextFieldFont
-        tempTextField.placeholder = AppStrings.login_email
         tempTextField.returnKeyType = .next
         tempTextField.keyboardType = .emailAddress
         return tempTextField
@@ -51,7 +50,6 @@ class LoginViewController: UIViewController, ErrorHandleProtocol {
         tempTextField.font = UIFont.loginTextFieldFont
         tempTextField.isSecureTextEntry = true
         tempTextField.returnKeyType = .done
-        tempTextField.placeholder = AppStrings.login_password
         return tempTextField
     }()
 
@@ -67,7 +65,6 @@ class LoginViewController: UIViewController, ErrorHandleProtocol {
 
     private let loginButton: SignInButton = {
         let tempButton = SignInButton()
-        tempButton.backgroundColor = .white
         tempButton.titleLabel?.font = UIFont.loginTextFieldFont
         tempButton.setTitle(AppStrings.login, for: .normal)
         tempButton.setTitleColor(UIColor(white: 0, alpha: 1), for: .normal)
@@ -125,6 +122,8 @@ class LoginViewController: UIViewController, ErrorHandleProtocol {
     ///login Session manager to perform login Session URL Requests
     private let loginSessionManager = LoginSessionManager()
 
+    private let loginViewModel = LoginViewModel()
+
     //MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,10 +139,35 @@ class LoginViewController: UIViewController, ErrorHandleProtocol {
         addPasswordTextFieldView()
         addLoginButton()
 
+        //DataModel
+        setDataModel()
+
         //Animate Views
         displayLogoImageView(completion: { [weak self] in
             self?.animateViews()
         })
+    }
+
+    //MARK: - Data Model
+
+    /// Method sets dataModel to the view
+    private func setDataModel(){
+
+        loginViewModel.data.bindAndFire() { [weak self] loginData in
+            DispatchQueue.main.async { [weak self] in
+                guard let weakSelf = self else {return}
+                weakSelf.loginButton.isEnabled = loginData.isLoginEnabled
+            }
+        }
+
+        emailTextField.placeholder = loginViewModel.data.value.email.placeHolder
+        emailTextField.text = loginViewModel.data.value.email.text
+        passwordTextField.placeholder = loginViewModel.data.value.password.placeHolder
+        passwordTextField.text = loginViewModel.data.value.password.text
+
+        setEditingEventsObserver(forTextField: emailTextField)
+        setEditingEventsObserver(forTextField: passwordTextField)
+
     }
 
     //MARK: - Add Views
@@ -194,6 +218,7 @@ class LoginViewController: UIViewController, ErrorHandleProtocol {
     ///adds loginButton view and set constraints
     private func addLoginButton(){
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+
         self.loginView.addSubview(loginButton)
 
         NSLayoutConstraint.activate([
@@ -307,19 +332,25 @@ class LoginViewController: UIViewController, ErrorHandleProtocol {
     ///called when loginButton is pressed. Checks and perform url session to login
     @objc fileprivate func loginButtonPressed(){
         self.view.endEditing(true)
-        guard let emailID = emailTextField.text,
-              !emailID.isEmpty,
-              let password = passwordTextField.text,
-              !password.isEmpty else {
+        guard let email = loginViewModel.data.value.email.text,
+              let password = loginViewModel.data.value.password.text,
+              loginViewModel.data.value.isLoginEnabled else {
             handle(error: .noDataFound)
             return
         }
+
+        showHud()
+
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let weakSelf = self else {
                 return
             }
-            weakSelf.loginSessionManager.getLoginDetails(emailID: emailID, password: password) {
-                
+            weakSelf.loginSessionManager.getLoginDetails(emailID: email, password: password) { keyChainJsonClass in
+                DispatchQueue.global(qos: .userInitiated).async {
+                    KeyChainManager.shared.save(keyChainData: keyChainJsonClass)
+                    DispatchQueue.main.async {
+                    }
+                }
             } errorBlock: { [weak self] error in
                 self?.handle(error: error)
             }
@@ -339,5 +370,16 @@ extension LoginViewController: UITextFieldDelegate{
         }
         return true
     }
+}
 
+//MARK: - TextFieldEditingEventsDelegate
+extension LoginViewController: TextFieldEditingEventsDelegate{
+
+    func textFieldDidChange(_ textField: UITextField) {
+        if textField == emailTextField{
+            loginViewModel.data.value.email.text = textField.text
+        }else if textField == passwordTextField{
+            loginViewModel.data.value.password.text = textField.text
+        }
+    }
 }

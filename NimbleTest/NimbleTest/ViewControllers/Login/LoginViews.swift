@@ -46,6 +46,12 @@ class SignInButton: UIButton, LoginCorneredViewProtocol{
         setRoundedCorners()
     }
 
+    override var isEnabled: Bool {
+        didSet {
+            self.backgroundColor = UIColor(white: 1, alpha: isEnabled ? 1 : 0.8)
+        }
+    }
+
 }
 
 ///TextField used to input password

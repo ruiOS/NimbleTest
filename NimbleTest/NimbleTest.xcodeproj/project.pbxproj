@@ -27,6 +27,12 @@
 		779B1D7D27E8D7100033AF67 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 778061BF27E76BA1000BDCF8 /* Localizable.strings */; };
 		779B1D7E27E8D7130033AF67 /* LocalisedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1EF427E786E100DC004C /* LocalisedString.swift */; };
 		779B1D7F27E8D7170033AF67 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1EF227E786B900DC004C /* AppStrings.swift */; };
+		779B1D8327E8DB5B0033AF67 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B1D8227E8DB5B0033AF67 /* LoginViewModel.swift */; };
+		779B1D8527E8DC0A0033AF67 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B1D8427E8DC0A0033AF67 /* Box.swift */; };
+		779B1D8727E8DFD30033AF67 /* TextFieldEditingEventsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B1D8627E8DFD30033AF67 /* TextFieldEditingEventsDelegate.swift */; };
+		779B1D8927E8E4260033AF67 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B1D8827E8E4260033AF67 /* KeyChainManager.swift */; };
+		779B1D8C27E8E9700033AF67 /* LoaderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B1D8B27E8E9700033AF67 /* LoaderProtocol.swift */; };
+		779B1D8E27E8F8110033AF67 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B1D8D27E8F8110033AF67 /* SessionDelegate.swift */; };
 		77DD896C27E7BCC4000550CD /* BaseURLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD896B27E7BCC4000550CD /* BaseURLSessionProtocol.swift */; };
 		77DD896F27E7C160000550CD /* ErrorHandleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD896E27E7C160000550CD /* ErrorHandleProtocol.swift */; };
 		77DD897127E7C189000550CD /* AppErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD897027E7C189000550CD /* AppErrors.swift */; };
@@ -77,6 +83,12 @@
 		778061AC27E75EBD000BDCF8 /* NimbleTestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleTestUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		778061BE27E76BA1000BDCF8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		778061C327E76D72000BDCF8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NimbleTest/SupportingFiles/Info.plist; sourceTree = SOURCE_ROOT; };
+		779B1D8227E8DB5B0033AF67 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		779B1D8427E8DC0A0033AF67 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		779B1D8627E8DFD30033AF67 /* TextFieldEditingEventsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldEditingEventsDelegate.swift; sourceTree = "<group>"; };
+		779B1D8827E8E4260033AF67 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
+		779B1D8B27E8E9700033AF67 /* LoaderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderProtocol.swift; sourceTree = "<group>"; };
+		779B1D8D27E8F8110033AF67 /* SessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDelegate.swift; sourceTree = "<group>"; };
 		77DD896B27E7BCC4000550CD /* BaseURLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseURLSessionProtocol.swift; sourceTree = "<group>"; };
 		77DD896E27E7C160000550CD /* ErrorHandleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandleProtocol.swift; sourceTree = "<group>"; };
 		77DD897027E7C189000550CD /* AppErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppErrors.swift; sourceTree = "<group>"; };
@@ -129,7 +141,11 @@
 		776E1EE827E76F0600DC004C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				779B1D8B27E8E9700033AF67 /* LoaderProtocol.swift */,
 				776E1EE927E76F1A00DC004C /* AppColors.swift */,
+				779B1D8427E8DC0A0033AF67 /* Box.swift */,
+				779B1D8627E8DFD30033AF67 /* TextFieldEditingEventsDelegate.swift */,
+				779B1D8827E8E4260033AF67 /* KeyChainManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -164,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				77DD896B27E7BCC4000550CD /* BaseURLSessionProtocol.swift */,
+				779B1D8D27E8F8110033AF67 /* SessionDelegate.swift */,
 				776E1EFF27E79C0600DC004C /* Login */,
 			);
 			path = "URL Session";
@@ -206,6 +223,7 @@
 			children = (
 				778061B927E76B38000BDCF8 /* AppDelegate */,
 				778061C027E76C19000BDCF8 /* ViewControllers */,
+				779B1D8127E8DB420033AF67 /* ViewModel */,
 				776E1EE827E76F0600DC004C /* Common */,
 				778061C127E76C39000BDCF8 /* SupportingFiles */,
 				776E1EFB27E79B6700DC004C /* Network Calls */,
@@ -253,8 +271,7 @@
 		778061C027E76C19000BDCF8 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				7780618D27E75EBB000BDCF8 /* LoginViewController.swift */,
-				776E1EF627E7986800DC004C /* LoginViews.swift */,
+				779B1D8027E8DB330033AF67 /* Login */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -267,6 +284,23 @@
 				778061C327E76D72000BDCF8 /* Info.plist */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		779B1D8027E8DB330033AF67 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				7780618D27E75EBB000BDCF8 /* LoginViewController.swift */,
+				776E1EF627E7986800DC004C /* LoginViews.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		779B1D8127E8DB420033AF67 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				779B1D8227E8DB5B0033AF67 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		77DD896D27E7C148000550CD /* Error Handle */ = {
@@ -302,6 +336,7 @@
 				7780618227E75EBB000BDCF8 /* Sources */,
 				7780618327E75EBB000BDCF8 /* Frameworks */,
 				7780618427E75EBB000BDCF8 /* Resources */,
+				EDB67EDAF3AB31F97354ACDC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -339,6 +374,7 @@
 				778061A227E75EBD000BDCF8 /* Sources */,
 				778061A327E75EBD000BDCF8 /* Frameworks */,
 				778061A427E75EBD000BDCF8 /* Resources */,
+				01CFCCB79F7D232B55A883B3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -424,6 +460,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		01CFCCB79F7D232B55A883B3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NimbleTest-NimbleTestUITests/Pods-NimbleTest-NimbleTestUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NimbleTest-NimbleTestUITests/Pods-NimbleTest-NimbleTestUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NimbleTest-NimbleTestUITests/Pods-NimbleTest-NimbleTestUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3EFCE809AC9EA98F54D32061 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -490,6 +543,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EDB67EDAF3AB31F97354ACDC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NimbleTest/Pods-NimbleTest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NimbleTest/Pods-NimbleTest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NimbleTest/Pods-NimbleTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -498,13 +568,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				77DD897127E7C189000550CD /* AppErrors.swift in Sources */,
+				779B1D8527E8DC0A0033AF67 /* Box.swift in Sources */,
 				776E1EEA27E76F1A00DC004C /* AppColors.swift in Sources */,
+				779B1D8E27E8F8110033AF67 /* SessionDelegate.swift in Sources */,
 				77DD896F27E7C160000550CD /* ErrorHandleProtocol.swift in Sources */,
+				779B1D8727E8DFD30033AF67 /* TextFieldEditingEventsDelegate.swift in Sources */,
 				77DD896C27E7BCC4000550CD /* BaseURLSessionProtocol.swift in Sources */,
 				7780618E27E75EBB000BDCF8 /* LoginViewController.swift in Sources */,
+				779B1D8927E8E4260033AF67 /* KeyChainManager.swift in Sources */,
 				776E1F0127E79C4B00DC004C /* LoginResponse.swift in Sources */,
 				776E1EF127E784D000DC004C /* UIFont+Extension.swift in Sources */,
+				779B1D8C27E8E9700033AF67 /* LoaderProtocol.swift in Sources */,
 				776E1EF327E786B900DC004C /* AppStrings.swift in Sources */,
+				779B1D8327E8DB5B0033AF67 /* LoginViewModel.swift in Sources */,
 				776E1EFE27E79BA300DC004C /* LoginSessionManager.swift in Sources */,
 				7780618A27E75EBB000BDCF8 /* AppDelegate.swift in Sources */,
 				776E1EF527E786E100DC004C /* LocalisedString.swift in Sources */,

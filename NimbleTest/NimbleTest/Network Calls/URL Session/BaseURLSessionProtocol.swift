@@ -15,8 +15,10 @@ enum HTTPMethod:String {
     case delete      =   "DELETE"
 }
 
+/// baseDomainURL for all nimble apis
+let baseDomainURLString = "https://survey-api.nimblehq.co"
+
 typealias ErrorHandleBlock = ((AppErrors)->Void)
-typealias SuccessBlock = (()->Void)
 
 ///Base URL Session Protocol consisting of common url session methods
 protocol BaseURLSessionProtocol{
@@ -24,9 +26,9 @@ protocol BaseURLSessionProtocol{
     /// method used to append query items to url
     /// - Parameters:
     ///   - queryItems: query items to be appended to url
-    ///   - url: string value of url to be created
+    ///   - urlString: string value of url to be created
     /// - Returns: create url using urlString and query Items
-    func append(queryItems: [URLQueryItem], toURL url: String) -> URL?
+    func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?
     
     /// perform's url session
     /// - Parameters:
@@ -34,11 +36,15 @@ protocol BaseURLSessionProtocol{
     ///   - errorBlock: errorBlock if error is thrown
     ///   - completionBlock: completionBlock Passes Data to parse it
     func performURLSession(forURLRequest urlRequest: URLRequest, errorBlock: @escaping ErrorHandleBlock, completionBlock: @escaping ((Data) -> Void))
+
+    ///sessionDelegateClass to handle sessionDelegate methods
+    var sessionDelegate: URLSessionDelegate {get set}
 }
 
 extension BaseURLSessionProtocol{
 
-    func append(queryItems: [URLQueryItem], toURL url: String) -> URL?{
+    func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?{
+        let url: String = String(format: urlString, baseDomainURLString)
         var urlComps = URLComponents(string: url)
         urlComps?.queryItems = queryItems
         return urlComps?.url
@@ -46,10 +52,10 @@ extension BaseURLSessionProtocol{
 
 }
 
-extension BaseURLSessionProtocol where Self: URLSessionDelegate{
+extension BaseURLSessionProtocol{
 
     func performURLSession(forURLRequest urlRequest: URLRequest, errorBlock: @escaping ErrorHandleBlock, completionBlock: @escaping ((Data) -> Void)){
-        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        let session = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: nil)
         let dataTask = session.dataTask(with: urlRequest as URLRequest) { data, response, error in
             if let error = error {
                 errorBlock(.serverSideError(error.localizedDescription))

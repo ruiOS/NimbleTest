@@ -7,9 +7,18 @@
 
 import Foundation
 
-class LoginSessionManager: NSObject, BaseURLSessionProtocol, URLSessionDelegate{
+///Network Manager to handle Login
+class LoginSessionManager: NSObject, BaseURLSessionProtocol{
 
-    func getLoginDetails(emailID: String, password: String, successBlock: @escaping SuccessBlock, errorBlock: @escaping ErrorHandleBlock){
+    var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
+
+    /// method fetches login/keychain details for the uploaded parameters
+    /// - Parameters:
+    ///   - emailID: emailID of the user
+    ///   - password: Password of the user
+    ///   - successBlock: block called on comletion
+    ///   - errorBlock: block called if error is thrown
+    func getLoginDetails(emailID: String, password: String, successBlock: @escaping ((KeyChainJsonClass)-> Void), errorBlock: @escaping ErrorHandleBlock){
 
         let queryItems = [
             URLQueryItem(name: "grant_type", value: "password"),
@@ -18,7 +27,7 @@ class LoginSessionManager: NSObject, BaseURLSessionProtocol, URLSessionDelegate{
             URLQueryItem(name: "email", value: emailID),
             URLQueryItem(name: "password", value: password)]
 
-        guard let url = append(queryItems: queryItems, toURL: "https://survey-api.nimblehq.co/api/v1/oauth/token") else {
+        guard let url = append(queryItems: queryItems, toURLString: "%@/api/v1/oauth/token") else {
             errorBlock(.urlCantBeGenerated)
             return
         }
@@ -31,7 +40,7 @@ class LoginSessionManager: NSObject, BaseURLSessionProtocol, URLSessionDelegate{
             do{
                 let responseObject: LoginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
                 if let responseData = responseObject.data {
-                    successBlock()
+                    successBlock(responseData.attributes)
                     return
                 }else if let errors = responseObject.errors,
                          !errors.isEmpty{
@@ -46,34 +55,6 @@ class LoginSessionManager: NSObject, BaseURLSessionProtocol, URLSessionDelegate{
             }
         }
 
-    }
-
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard let serverTrust = challenge.protectionSpace.serverTrust else {
-            completionHandler(.cancelAuthenticationChallenge, nil)
-            return
-        }
-
-        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-           challenge.protectionSpace.host == "survey-api.nimblehq.co" {
-
-            if let pem = Bundle.main.url(forResource:"sni.cloudflaressl.com", withExtension: "cer"),
-               let data = NSData(contentsOf: pem),
-               let cert = SecCertificateCreateWithData(nil, data) {
-                let certs = [cert]
-                SecTrustSetAnchorCertificates(serverTrust, certs as CFArray)
-                var result=SecTrustResultType.invalid
-                if SecTrustEvaluate(serverTrust,&result)==errSecSuccess {
-                    if result==SecTrustResultType.proceed || result==SecTrustResultType.unspecified {
-                        let proposedCredential = URLCredential(trust: serverTrust)
-                        completionHandler(.useCredential,proposedCredential)
-                        return
-                    }
-                }
-                
-            }
-        }
-        completionHandler(.performDefaultHandling, nil)
     }
 
 }

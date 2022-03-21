@@ -14,11 +14,12 @@ protocol ErrorHandleProtocol{
     func handle(error: AppErrors)
 }
 
-extension ErrorHandleProtocol where Self: UIViewController{
+extension ErrorHandleProtocol where Self: UIViewController & LoaderProtocol{
 
     func handle(error: AppErrors){
         DispatchQueue.main.async { [weak self] in
             guard let weakSelf = self else { return }
+            weakSelf.dismissHud()
 
             switch error {
             case .serverSideError(let message):

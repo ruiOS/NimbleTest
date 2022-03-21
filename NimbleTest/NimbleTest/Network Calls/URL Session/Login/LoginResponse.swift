@@ -17,26 +17,6 @@ struct LoginResponse: Codable {
     ///Errors if thrown
     let errors: [Error]?
 
-    struct DataClass: Codable {
-        let id, type: String
-        let attributes: Attributes
-
-        struct Attributes: Codable {
-            let accessToken, tokenType: String
-            let expiresIn: Int
-            let refreshToken: String
-            let createdAt: Int
-
-            enum CodingKeys: String, CodingKey {
-                case accessToken = "access_token"
-                case tokenType = "token_type"
-                case expiresIn = "expires_in"
-                case refreshToken = "refresh_token"
-                case createdAt = "created_at"
-            }
-        }
-    }
-
     struct Error: Codable {
         let source: Source
         let detail, code: String
@@ -47,4 +27,24 @@ struct LoginResponse: Codable {
 
     }
 
+    struct DataClass: Codable {
+        let id, type: String
+        let attributes: KeyChainJsonClass
+    }
+
+}
+
+struct KeyChainJsonClass: Codable {
+    let accessToken, tokenType: String
+    let expiresIn: Int
+    let refreshToken: String
+    let createdAt: Int
+
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case tokenType = "token_type"
+        case expiresIn = "expires_in"
+        case refreshToken = "refresh_token"
+        case createdAt = "created_at"
+    }
 }

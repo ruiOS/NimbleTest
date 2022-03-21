@@ -48,13 +48,6 @@ class NimbleTestUITests: XCTestCase {
         app.secureTextFields[AppStrings.login_password].tap()
         app.staticTexts[AppStrings.login].tap()
         let alert = app.alerts[AppStrings.error_dataInadequate]
-        XCTAssert(alert.exists)
-
-        let okButton = alert.scrollViews.otherElements.buttons[AppStrings.common_ok]
-        XCTAssert(okButton.exists)
-
-        okButton.tap()
-
         XCTAssertFalse(alert.exists)
     }
 
