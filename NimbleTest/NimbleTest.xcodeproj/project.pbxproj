@@ -24,6 +24,9 @@
 		778061AB27E75EBD000BDCF8 /* NimbleTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778061AA27E75EBD000BDCF8 /* NimbleTestUITests.swift */; };
 		778061AD27E75EBD000BDCF8 /* NimbleTestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778061AC27E75EBD000BDCF8 /* NimbleTestUITestsLaunchTests.swift */; };
 		778061BD27E76BA1000BDCF8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 778061BF27E76BA1000BDCF8 /* Localizable.strings */; };
+		779B1D7D27E8D7100033AF67 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 778061BF27E76BA1000BDCF8 /* Localizable.strings */; };
+		779B1D7E27E8D7130033AF67 /* LocalisedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1EF427E786E100DC004C /* LocalisedString.swift */; };
+		779B1D7F27E8D7170033AF67 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1EF227E786B900DC004C /* AppStrings.swift */; };
 		77DD896C27E7BCC4000550CD /* BaseURLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD896B27E7BCC4000550CD /* BaseURLSessionProtocol.swift */; };
 		77DD896F27E7C160000550CD /* ErrorHandleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD896E27E7C160000550CD /* ErrorHandleProtocol.swift */; };
 		77DD897127E7C189000550CD /* AppErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DD897027E7C189000550CD /* AppErrors.swift */; };
@@ -179,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				7780618827E75EBB000BDCF8 /* NimbleTest */,
+				778061BA27E76B6D000BDCF8 /* Strings */,
 				7780619F27E75EBD000BDCF8 /* NimbleTestTests */,
 				778061A927E75EBD000BDCF8 /* NimbleTestUITests */,
 				7780618727E75EBB000BDCF8 /* Products */,
@@ -202,7 +206,6 @@
 			children = (
 				778061B927E76B38000BDCF8 /* AppDelegate */,
 				778061C027E76C19000BDCF8 /* ViewControllers */,
-				778061BA27E76B6D000BDCF8 /* Strings */,
 				776E1EE827E76F0600DC004C /* Common */,
 				778061C127E76C39000BDCF8 /* SupportingFiles */,
 				776E1EFB27E79B6700DC004C /* Network Calls */,
@@ -414,6 +417,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				779B1D7D27E8D7100033AF67 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,7 +524,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				779B1D7E27E8D7130033AF67 /* LocalisedString.swift in Sources */,
 				778061AB27E75EBD000BDCF8 /* NimbleTestUITests.swift in Sources */,
+				779B1D7F27E8D7170033AF67 /* AppStrings.swift in Sources */,
 				778061AD27E75EBD000BDCF8 /* NimbleTestUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

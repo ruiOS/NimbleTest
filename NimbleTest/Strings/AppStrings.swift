@@ -10,6 +10,8 @@ import Foundation
 /// Struct consisiting of all strings needed in the app
 struct AppStrings{
 
+    private init(){}
+
     @LocalisedString(key: "nimbleTest.ios.login.forgotPassword", comment: "Forgot?")
     static var login_forgotPassword: String
 
