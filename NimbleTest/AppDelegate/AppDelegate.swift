@@ -18,12 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window = UIWindow(frame: UIScreen.main.bounds)
 
-//        if let token = KeyChainManager.shared.getString(forKey: .refreshToken),
-//           !token.isEmpty{
-//            window?.rootViewController = SurveyListViewController()
-//        }else{
+        if let token = KeyChainManager.shared.getString(forKey: .refreshToken),
+           !token.isEmpty{
+            window?.rootViewController = SurveyListViewController()
+        }else{
             window?.rootViewController = LoginViewController()
-//        }
+        }
 
         window?.makeKeyAndVisible()
 

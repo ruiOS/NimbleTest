@@ -27,3 +27,5 @@
 "nimbleTest.ios.error.enterRequiredData"    = "Please enter required data and try again";
 "nimbleTest.ios.error.logoutAndLoginAgain"  = "Please Kindly Logout And Login Again";
 
+//Survey
+"nimbleTest.ios.surveyView.today"  = "Today";
