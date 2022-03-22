@@ -21,6 +21,7 @@ class NimbleTestUITests: XCTestCase {
     }
 
     override func setUp() {
+        setupSnapshot(app)  
         app.launch()
     }
 
@@ -40,6 +41,7 @@ class NimbleTestUITests: XCTestCase {
         XCTAssert(passwordSecureTextField.exists)
         XCTAssert(forgotPasswordButton.exists)
         XCTAssert(loginButton.exists)
+        snapshot("testLogin")
     }
 
     ///method tests empty Login

@@ -27,6 +27,9 @@ struct AppStrings{
     @LocalisedString(key: "nimbleTest.ios.common.ok", comment: "Ok")
     static var common_ok: String
 
+    @LocalisedString(key: "nimbleTest.ios.common.logout", comment: "Logout")
+    static var common_logout: String
+
     //Error
     @LocalisedString(key: "nimbleTest.ios.error.title.anErrorOccured", comment: "An Error Occured")
     static var error_anErrorOccured: String
@@ -36,6 +39,9 @@ struct AppStrings{
 
     @LocalisedString(key: "nimbleTest.ios.error.title.dataParseError", comment: "DataParse Error")
     static var error_dataParseError: String
+
+    @LocalisedString(key: "nimbleTest.ios.error.title.authTokenNotFound", comment: "Auth Token Not Found")
+    static var error_authTokenNotFound: String
 
     @LocalisedString(key: "nimbleTest.ios.error.authenticationError", comment: "Authentication Error")
     static var error_authenticationError: String
@@ -55,5 +61,7 @@ struct AppStrings{
     @LocalisedString(key: "nimbleTest.ios.error.enterRequiredData", comment: "Please enter required data and try again")
     static var error_enterRequiredData: String
 
+    @LocalisedString(key: "nimbleTest.ios.error.logoutAndLoginAgain", comment: "Please Kindly Logout And Login Again")
+    static var error_logoutAndLoginAgain: String
 
 }

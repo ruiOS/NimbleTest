@@ -34,6 +34,7 @@ struct LoginResponse: Codable {
 
 }
 
+///Data Class Containing token Data
 struct KeyChainJsonClass: Codable {
     let accessToken, tokenType: String
     let expiresIn: Int

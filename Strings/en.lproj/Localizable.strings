@@ -11,11 +11,13 @@
 "nimbleTest.ios.login.email" = "Email";
 "nimbleTest.ios.login.password" = "Password";
 "nimbleTest.ios.common.ok" = "Ok";
+"nimbleTest.ios.common.logout"  = "Logout";
 
 //Error
 "nimbleTest.ios.error.title.anErrorOccured" = "An Error Occured";
 "nimbleTest.ios.error.title.dataInadequate" = "Data Inadequate";
-"nimbleTest.ios.error.title.dataParseError"       = "DataParse Error";
+"nimbleTest.ios.error.title.dataParseError" = "DataParse Error";
+"nimbleTest.ios.error.title.AuthTokenNotFound"  = "Auth Token Not Found";
 
 "nimbleTest.ios.error.authenticationError"  = "Authentication Error";
 "nimbleTest.ios.error.pleaseTryAgain"       = "Please try again";
@@ -23,3 +25,5 @@
 "nimbleTest.ios.error.noNetworkConnection"  = "No network connection";
 "nimbleTest.ios.error.requestTimedOut"      = "Request TimedOut";
 "nimbleTest.ios.error.enterRequiredData"    = "Please enter required data and try again";
+"nimbleTest.ios.error.logoutAndLoginAgain"  = "Please Kindly Logout And Login Again";
+

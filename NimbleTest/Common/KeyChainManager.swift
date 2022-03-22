@@ -46,7 +46,7 @@ struct KeyChainManager{
     /// - Parameters:
     ///   - string: string to be stored
     ///   - key: key of the query
-    public func save(string: String?,forKey key: KeychainQuery){
+    func save(string: String?,forKey key: KeychainQuery){
         if let tempString = string, !tempString.isEmpty{
             wrapper.set(tempString, forKey: key.rawValue)
         }
@@ -56,7 +56,7 @@ struct KeyChainManager{
     /// - Parameters:
     ///   - integer: integer to be stored
     ///   - key: key of the query
-    public func save(integer: Int, key: KeychainQuery){
+    func save(integer: Int, key: KeychainQuery){
         wrapper.set(integer, forKey: key.rawValue)
     }
 
@@ -79,12 +79,12 @@ struct KeyChainManager{
     //MARK: - Remove
     /// remove data for a query in keychain
     /// - Parameter key: query for which data need to be removed
-    public func removeObject(forKey key: KeychainQuery){
+    func removeObject(forKey key: KeychainQuery){
         wrapper.removeObject(forKey: key.rawValue)
     }
     
     /// deletes all app data in keychain
-    public func deleteKeyChainData(){
+    func deleteKeyChainData(){
         let keys = wrapper.allKeys()
         for aKey in keys{
             wrapper.removeObject(forKey: aKey)

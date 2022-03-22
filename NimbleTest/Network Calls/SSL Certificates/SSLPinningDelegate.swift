@@ -1,5 +1,5 @@
 //
-//  SessionDelegate.swift
+//  SSLPinningDelegate.swift
 //  NimbleTest
 //
 //  Created by rupesh on 21/03/22.

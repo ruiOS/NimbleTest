@@ -345,11 +345,8 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
             guard let weakSelf = self else {
                 return
             }
-            weakSelf.loginSessionManager.getLoginDetails(emailID: email, password: password) { keyChainJsonClass in
-                DispatchQueue.global(qos: .userInitiated).async {
-                    KeyChainManager.shared.save(keyChainData: keyChainJsonClass)
-                    DispatchQueue.main.async {
-                    }
+            weakSelf.loginSessionManager.getLoginDetails(emailID: email, password: password) { [weak self] in
+                DispatchQueue.main.async {
                 }
             } errorBlock: { [weak self] error in
                 self?.handle(error: error)

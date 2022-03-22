@@ -38,6 +38,13 @@ extension ErrorHandleProtocol where Self: UIViewController & LoaderProtocol{
                 weakSelf.displayAlert(withTitle: nil, withMessage: AppStrings.error_requestTimedOut)
             case .noDataFound:
                 weakSelf.displayAlert(withTitle: AppStrings.error_dataInadequate, withMessage: AppStrings.error_enterRequiredData)
+            case .noAuthToken:
+                weakSelf.displayAlert(withTitle: AppStrings.error_authTokenNotFound, withMessage: AppStrings.error_authenticationError, actions: [UIAlertAction(title: AppStrings.common_logout, style: .destructive, handler: { action in
+                    DispatchQueue.global(qos: .background).async {
+                        KeyChainManager.shared.deleteKeyChainData()
+                        AppDelegate.shared?.showLoginView()
+                    }
+                })])
             }
         }
     }
@@ -46,9 +53,13 @@ extension ErrorHandleProtocol where Self: UIViewController & LoaderProtocol{
     /// - Parameters:
     ///   - title: title of alert
     ///   - message: message of alert
-    func displayAlert(withTitle title: String?,withMessage message: String){
+    func displayAlert(withTitle title: String?,withMessage message: String, actions: [UIAlertAction] = [UIAlertAction]()){
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: AppStrings.common_ok, style: .default))
+        if actions.isEmpty{
+            alert.addAction(UIAlertAction(title: AppStrings.common_ok, style: .default))
+        }else{
+            actions.forEach{ alert.addAction($0) }
+        }
         self.present(alert, animated: true)
     }
 }
