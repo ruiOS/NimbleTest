@@ -15,17 +15,7 @@ struct LoginResponse: Codable {
     let data: DataClass?
 
     ///Errors if thrown
-    let errors: [Error]?
-
-    struct Error: Codable {
-        let source: Source
-        let detail, code: String
-
-        struct Source: Codable {
-            let parameter: String
-        }
-
-    }
+    let errors: [ErrorModel]?
 
     struct DataClass: Codable {
         let id, type: String

@@ -38,7 +38,9 @@ protocol BaseURLSessionProtocol{
     ///   - urlString: string value of url to be created
     /// - Returns: create url using urlString and query Items
     func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?
-    
+
+    func generateURLString(fromapi: String)->String
+
     /// perform's url session
     /// - Parameters:
     ///   - urlRequest: url request for which session need to be performed
@@ -51,7 +53,7 @@ protocol BaseURLSessionProtocol{
 extension BaseURLSessionProtocol{
 
     func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?{
-        let url: String = String(format: urlString, baseDomainURLString)
+        let url: String = generateURLString(fromapi: urlString)
         
         let tempQueryItems = queryItems + [ URLQueryItem(name: "client_id", value: "6GbE8dhoz519l2N_F99StqoOs6Tcmm1rXgda4q__rIw"),
                                    URLQueryItem(name: "client_secret", value: "_ayfIm7BeUAhx2W1OUqi20fwO3uNxfo1QstyKlFCgHw")]
@@ -59,6 +61,13 @@ extension BaseURLSessionProtocol{
         var urlComps = URLComponents(string: url)
         urlComps?.queryItems = tempQueryItems
         return urlComps?.url
+    }
+    
+    /// Creates string for given api using base domain
+    /// - Parameter api: api for string creation
+    /// - Returns: api after appending domain
+    func generateURLString(fromapi api: String)->String{
+        String(format: api, baseDomainURLString)
     }
 
 }
@@ -79,11 +88,20 @@ extension BaseURLSessionProtocol{
         }
         dataTask.resume()
     }
-
-    func createURLRequest(withurl url: URL, withHTTPMethod httpMethod: HTTPMethod) -> URLRequest{
+    
+    /// creates url request
+    /// - Parameters:
+    ///   - url: url for which request need to be created
+    ///   - httpMethod: http method type of the request
+    ///   - headers: headers to be added for url request
+    /// - Returns: url request with specified parameters
+    func createURLRequest(withurl url: URL, withHTTPMethod httpMethod: HTTPMethod, withHeaders headers:[(String,String)] = []) -> URLRequest{
         let urlRequest = NSMutableURLRequest(url: url)
         urlRequest.httpMethod = httpMethod.rawValue
         urlRequest.timeoutInterval = 15.0
+        for (key, value) in headers{
+            urlRequest.setValue(value, forHTTPHeaderField: key)
+        }
         return urlRequest as URLRequest
     }
 }

@@ -22,32 +22,30 @@ class SurveyListViewController:UIViewController{
 
     ///date label containing today date
     private let dateLabel: UILabel = {
-        let tempTitleLabel = UILabel()
-        tempTitleLabel.font = UIFont.dateLabelFont
-        tempTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        tempTitleLabel.backgroundColor = .clear
-        tempTitleLabel.contentMode = .topLeft
-        tempTitleLabel.numberOfLines = 1
-        tempTitleLabel.lineBreakMode = .byTruncatingTail
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE MMMM, dd"
-        tempTitleLabel.textColor = .white
-        tempTitleLabel.text = dateFormatter.string(from: Date())
-        return tempTitleLabel
+        let tempLabel = UILabel()
+        tempLabel.font = UIFont.dateLabelFont
+        tempLabel.translatesAutoresizingMaskIntoConstraints = false
+        tempLabel.backgroundColor = .clear
+        tempLabel.contentMode = .topLeft
+        tempLabel.numberOfLines = 1
+        tempLabel.isSkeletonEnabled =  true
+        tempLabel.lineBreakMode = .byTruncatingTail
+        tempLabel.textColor = .white
+        return tempLabel
     }()
 
     ///label containing today string
     private let todayLabel: UILabel = {
-        let tempTitleLabel = UILabel()
-        tempTitleLabel.font = UIFont.todayLabelFont
-        tempTitleLabel.text = AppStrings.surveyView_today
-        tempTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        tempTitleLabel.backgroundColor = .clear
-        tempTitleLabel.contentMode = .topLeft
-        tempTitleLabel.textColor = .white
-        tempTitleLabel.numberOfLines = 1
-        tempTitleLabel.lineBreakMode = .byTruncatingTail
-        return tempTitleLabel
+        let tempLabel = UILabel()
+        tempLabel.font = UIFont.todayLabelFont
+        tempLabel.translatesAutoresizingMaskIntoConstraints = false
+        tempLabel.backgroundColor = .clear
+        tempLabel.contentMode = .topLeft
+        tempLabel.textColor = .white
+        tempLabel.numberOfLines = 1
+        tempLabel.isSkeletonEnabled =  true
+        tempLabel.lineBreakMode = .byTruncatingTail
+        return tempLabel
     }()
 
     ///pageControl of the View
@@ -58,33 +56,36 @@ class SurveyListViewController:UIViewController{
         tempPageControl.backgroundColor = .clear
         tempPageControl.currentPageIndicatorTintColor = .white
         tempPageControl.contentMode = .left
+        tempPageControl.isSkeletonEnabled =  true
         return tempPageControl
     }()
 
     ///titleLabel containing survey title
     private let titleLabel: UILabel = {
-        let tempTitleLabel = UILabel()
-        tempTitleLabel.font = UIFont.surveyTitleLabelFont
-        tempTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        tempTitleLabel.backgroundColor = .clear
-        tempTitleLabel.contentMode = .topLeft
-        tempTitleLabel.textColor = .white
-        tempTitleLabel.numberOfLines = 2
-        tempTitleLabel.lineBreakMode = .byTruncatingTail
-        return tempTitleLabel
+        let tempLabel = UILabel()
+        tempLabel.font = UIFont.surveyTitleLabelFont
+        tempLabel.translatesAutoresizingMaskIntoConstraints = false
+        tempLabel.backgroundColor = .clear
+        tempLabel.contentMode = .topLeft
+        tempLabel.textColor = .white
+        tempLabel.numberOfLines = 2
+        tempLabel.isSkeletonEnabled =  true
+        tempLabel.lineBreakMode = .byTruncatingTail
+        return tempLabel
     }()
 
     ///descriptionLabel containing survey detail
     private let descriptionLabel: UILabel = {
-        let tempTitleLabel = UILabel()
-        tempTitleLabel.font = UIFont.descriptionLabelFont
-        tempTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        tempTitleLabel.backgroundColor = .clear
-        tempTitleLabel.contentMode = .topLeft
-        tempTitleLabel.textColor = .white
-        tempTitleLabel.numberOfLines = 2
-        tempTitleLabel.lineBreakMode = .byTruncatingTail
-        return tempTitleLabel
+        let tempLabel = UILabel()
+        tempLabel.font = UIFont.descriptionLabelFont
+        tempLabel.translatesAutoresizingMaskIntoConstraints = false
+        tempLabel.backgroundColor = .clear
+        tempLabel.contentMode = .topLeft
+        tempLabel.textColor = .white
+        tempLabel.numberOfLines = 2
+        tempLabel.isSkeletonEnabled =  true
+        tempLabel.lineBreakMode = .byTruncatingTail
+        return tempLabel
     }()
 
     ///profle button containing profile details
@@ -92,6 +93,7 @@ class SurveyListViewController:UIViewController{
         let tempButton = UIButton()
         tempButton.translatesAutoresizingMaskIntoConstraints = false
         tempButton.backgroundColor = .clear
+        tempButton.isSkeletonEnabled =  true
         tempButton.setImage(UIImage(named: "Oval"), for: .normal)
         return tempButton
     }()
@@ -101,6 +103,7 @@ class SurveyListViewController:UIViewController{
         let tempButton = UIButton()
         tempButton.translatesAutoresizingMaskIntoConstraints = false
         tempButton.backgroundColor = .white
+        tempButton.isSkeletonEnabled =  true
         tempButton.setImage(UIImage(named: "Arrow"), for: .normal)
         return tempButton
     }()
@@ -126,6 +129,9 @@ class SurveyListViewController:UIViewController{
         }
     }
 
+    //MARK: - Manager
+    let surveyListSessionManager = SurveyListSessionManager()
+
     //MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,6 +150,9 @@ class SurveyListViewController:UIViewController{
         //make buttons circular
         turnViewIntoCircularView(forView: nextButton)
         turnViewIntoCircularView(forView: profileButton)
+
+        view.showSkeletonForSubViews()
+
     }
 
     //MARK: - Add View
@@ -168,7 +177,7 @@ class SurveyListViewController:UIViewController{
         NSLayoutConstraint.activate([
             pageControl.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: -15),
             pageControl.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: -edgeSpacing),
-            pageControl.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -185),
+            pageControl.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -214),
             pageControl.heightAnchor.constraint(equalToConstant: 8)
         ])
     }
@@ -181,7 +190,7 @@ class SurveyListViewController:UIViewController{
             titleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: edgeSpacing),
             titleLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -edgeSpacing),
             titleLabel.topAnchor.constraint(equalTo: self.pageControl.bottomAnchor, constant: 26),
-            titleLabel.heightAnchor.constraint(equalToConstant: 52)
+            titleLabel.heightAnchor.constraint(equalToConstant: 68)
         ])
     }
 
@@ -191,9 +200,9 @@ class SurveyListViewController:UIViewController{
 
         NSLayoutConstraint.activate([
             descriptionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: edgeSpacing),
-            descriptionLabel.trailingAnchor.constraint(equalTo: self.nextButton.trailingAnchor, constant: -edgeSpacing),
+            descriptionLabel.trailingAnchor.constraint(equalTo: self.nextButton.leadingAnchor, constant: -edgeSpacing),
             descriptionLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 16),
-            descriptionLabel.heightAnchor.constraint(equalToConstant: 29),
+            descriptionLabel.heightAnchor.constraint(equalToConstant: 42),
             nextButton.bottomAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor)
         ])
     }
@@ -248,9 +257,8 @@ class SurveyListViewController:UIViewController{
     /// makes given view circular
     /// - Parameter circularView: view to be turned circular
     private func turnViewIntoCircularView(forView circularView: UIView){
-        circularView.layoutIfNeeded()
+        self.view.layoutIfNeeded()
         circularView.layer.cornerRadius = circularView.frame.size.width/2
         circularView.clipsToBounds = true
     }
 }
-

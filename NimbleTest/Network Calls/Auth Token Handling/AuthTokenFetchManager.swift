@@ -14,8 +14,8 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, FetchAuthTokenProtocol{
     
     /// methods returns AuthToken
     /// - Parameter errorBlock: executes when an error occured in fetching
-    /// - Returns: returns refresh token and AuthToken error if present
-    func getToken(errorBlock: @escaping ErrorHandleBlock) -> (String, AppErrors?) {
+    /// - Returns: returns refresh token
+    func getToken(errorBlock: @escaping ErrorHandleBlock) -> String {
 
         ///static instance of keyChainManager
         let keyChainManager = KeyChainManager.shared
@@ -27,7 +27,8 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, FetchAuthTokenProtocol{
               !refreshToken.isEmpty,
               let tokenCreationTime = keyChainManager.getInteger(forKey: .tokenCreationTime),
               let expiryPeriod = keyChainManager.getInteger(forKey: .tokenExpiryPeriod) else {
-            return ("",.noAuthToken)
+            errorBlock(.noAuthToken)
+            return ""
         }
 
         ///Expiration time of the token
@@ -36,7 +37,7 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, FetchAuthTokenProtocol{
 
         //return auth token if not expired
         if expiryTime > Date() {
-            return (accessToken,nil)
+            return accessToken
         }else{
             // fetch new token if expired
 
@@ -44,8 +45,7 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, FetchAuthTokenProtocol{
             let group = DispatchGroup()
             ///access token
             var newAccessToken: String = ""
-            /// error if found
-            var error: AppErrors?
+
             // enter dispatch group
             group.enter()
 
@@ -54,10 +54,10 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, FetchAuthTokenProtocol{
                 self?.refreshToken(errorBlock: errorBlock, completionBlock: {
                     //token is present
                     if let token = KeyChainManager.shared.getString(forKey: .refreshToken), !token.isEmpty{
-                        (newAccessToken,error) = (token,nil)
+                        newAccessToken = token
                     }else{
                         //token is absent
-                        (newAccessToken,error) = ("",.noAuthToken)
+                        errorBlock(.noAuthToken)
                     }
                     //leave group
                     group.leave()
@@ -67,7 +67,7 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, FetchAuthTokenProtocol{
             // wait until task is completed
             group.wait()
             //return authtoken and error
-            return (newAccessToken,error)
+            return newAccessToken
         }
     }
     
