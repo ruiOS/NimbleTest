@@ -17,4 +17,5 @@ enum AppErrors: Error{
     case noNetworkConnection
     case requestTimedOut
     case noDataFound
+    case noAuthToken
 }
