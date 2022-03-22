@@ -23,6 +23,8 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, FetchAuthTokenProtocol{
         /// return no auth error if refresh token is invalid
         guard let accessToken = keyChainManager.getString(forKey: .accessToken),
               !accessToken.isEmpty,
+              let refreshToken = keyChainManager.getString(forKey: .refreshToken),
+              !refreshToken.isEmpty,
               let tokenCreationTime = keyChainManager.getInteger(forKey: .tokenCreationTime),
               let expiryPeriod = keyChainManager.getInteger(forKey: .tokenExpiryPeriod) else {
             return ("",.noAuthToken)

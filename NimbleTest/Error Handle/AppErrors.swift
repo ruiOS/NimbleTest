@@ -8,7 +8,7 @@
 import Foundation
 
 ///Errors Defined across the app
-enum AppErrors: Error{
+enum AppErrors: Error, Equatable{
     case serverSideError(String)
     case authenticationError(String)
     case dataParseError(String)

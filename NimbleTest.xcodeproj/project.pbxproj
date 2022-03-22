@@ -10,6 +10,8 @@
 		7735C9E527E9A47700E523F5 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7735C9E427E9A47700E523F5 /* SnapshotHelper.swift */; };
 		7735C9E827E9D20D00E523F5 /* SurveyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7735C9E727E9D20D00E523F5 /* SurveyListViewController.swift */; };
 		7735C9EA27E9D43700E523F5 /* FetchAuthTokenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7735C9E927E9D43700E523F5 /* FetchAuthTokenProtocol.swift */; };
+		7735C9EB27E9E3A500E523F5 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779B1D8827E8E4260033AF67 /* KeyChainManager.swift */; };
+		7735C9EC27E9E3B800E523F5 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1F0027E79C4B00DC004C /* LoginResponse.swift */; };
 		776E1EEA27E76F1A00DC004C /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1EE927E76F1A00DC004C /* AppColors.swift */; };
 		776E1EEF27E7824700DC004C /* NeuzeitSLTStd-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 776E1EED27E780D400DC004C /* NeuzeitSLTStd-Book.ttf */; };
 		776E1EF127E784D000DC004C /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1EF027E784D000DC004C /* UIFont+Extension.swift */; };
@@ -632,10 +634,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				779B1D7E27E8D7130033AF67 /* LocalisedString.swift in Sources */,
+				7735C9EB27E9E3A500E523F5 /* KeyChainManager.swift in Sources */,
 				778061AB27E75EBD000BDCF8 /* NimbleTestUITests.swift in Sources */,
 				779B1D7F27E8D7170033AF67 /* AppStrings.swift in Sources */,
 				778061AD27E75EBD000BDCF8 /* NimbleTestUITestsLaunchTests.swift in Sources */,
 				7735C9E527E9A47700E523F5 /* SnapshotHelper.swift in Sources */,
+				7735C9EC27E9E3B800E523F5 /* LoginResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,14 +22,24 @@ class NimbleTestUITests: XCTestCase {
 
     override func setUp() {
         setupSnapshot(app)  
-        app.launch()
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testLoginSetUp(){
+    //MARK: - Login TextCases
+
+    func testLoginTestCases(){
+        KeyChainManager.shared.deleteKeyChainData()
+        checkLoginSetUp()
+        checkEmptyLogin()
+        checkInvalidLogin()
+        checkValidLogin()
+    }
+
+    private func checkLoginSetUp(){
+        app.launch()
         let nimbleLogo = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element
         let emailTextField = app.textFields[AppStrings.login_email]
         let passwordSecureTextField = app.secureTextFields[AppStrings.login_password]
@@ -45,7 +55,8 @@ class NimbleTestUITests: XCTestCase {
     }
 
     ///method tests empty Login
-    func testEmptyLogin(){
+    private func checkEmptyLogin(){
+        app.launch()
         app.textFields[AppStrings.login_email].tap()
         app.secureTextFields[AppStrings.login_password].tap()
         app.staticTexts[AppStrings.login].tap()
@@ -53,4 +64,51 @@ class NimbleTestUITests: XCTestCase {
         XCTAssertFalse(alert.exists)
     }
 
+    private func checkInvalidLogin(){
+        app.launch()
+        let emailTextField = app.textFields[AppStrings.login_email]
+        emailTextField.typeText("Invalid Email")
+        let passwordSecureTextField = app.secureTextFields[AppStrings.login_password]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText("Invalid Password")
+        let loginButton = app.buttons[AppStrings.login]
+        loginButton.tap()
+
+        let hud = app.otherElements["SVProgressHUD"]
+        XCTAssert(hud.exists)
+
+        let alert = app.alerts["Authentication Error"]
+        expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: alert)
+        waitForExpectations(timeout: 15)
+
+        XCTAssert(alert.exists)
+        let okButton = alert.scrollViews.otherElements.buttons["Ok"]
+        XCTAssert(okButton.exists)
+
+        okButton.tap()
+
+        XCTAssertFalse(alert.exists)
+        XCTAssertFalse(okButton.exists)
+    }
+
+    func checkValidLogin(){
+        app.launch()
+        let emailTextField = app.textFields[AppStrings.login_email]
+        emailTextField.typeText("dev@nimblehq.co")
+        let passwordSecureTextField = app.secureTextFields[AppStrings.login_password]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText("12345678")
+        let loginButton = app.buttons[AppStrings.login]
+        loginButton.tap()
+
+        let hud = app.otherElements["SVProgressHUD"]
+        XCTAssert(hud.exists)
+        
+        let app = XCUIApplication()
+
+        expectation(for: NSPredicate(format: "exists != 1"), evaluatedWith: emailTextField)
+        waitForExpectations(timeout: 15)
+
+        XCTAssertFalse(emailTextField.exists)
+    }
 }

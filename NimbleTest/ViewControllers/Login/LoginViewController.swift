@@ -347,6 +347,7 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
             }
             weakSelf.loginSessionManager.getLoginDetails(emailID: email, password: password) { [weak self] in
                 DispatchQueue.main.async {
+                        AppDelegate.shared?.window?.rootViewController = SurveyListViewController()
                 }
             } errorBlock: { [weak self] error in
                 self?.handle(error: error)
