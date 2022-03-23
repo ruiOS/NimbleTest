@@ -15,7 +15,7 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, QueryItemsProtocol, CreateU
     /// methods returns AuthToken
     /// - Parameter errorBlock: executes when an error occured in fetching
     /// - Returns: returns refresh token
-    func getToken(errorBlock: @escaping ErrorHandleBlock) -> String {
+    func getToken(errorBlock: ErrorHandleBlock?) -> String {
 
         ///static instance of keyChainManager
         let keyChainManager = KeyChainManager.shared
@@ -27,7 +27,7 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, QueryItemsProtocol, CreateU
               !refreshToken.isEmpty,
               let tokenCreationTime = keyChainManager.getInteger(forKey: .tokenCreationTime),
               let expiryPeriod = keyChainManager.getInteger(forKey: .tokenExpiryPeriod) else {
-            errorBlock(.noAuthToken)
+            errorBlock?(.noAuthToken)
             return ""
         }
 
@@ -53,11 +53,11 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, QueryItemsProtocol, CreateU
             DispatchQueue.global(qos: .background).sync { [weak self] in
                 self?.refreshToken(errorBlock: errorBlock, completionBlock: {
                     //token is present
-                    if let token = KeyChainManager.shared.getString(forKey: .refreshToken), !token.isEmpty{
+                    if let token = KeyChainManager.shared.getString(forKey: .accessToken), !token.isEmpty{
                         newAccessToken = token
                     }else{
                         //token is absent
-                        errorBlock(.noAuthToken)
+                        errorBlock?(.noAuthToken)
                     }
                     //leave group
                     group.leave()
@@ -70,21 +70,21 @@ class AuthTokenFetchManager: BaseURLSessionProtocol, QueryItemsProtocol, CreateU
             return newAccessToken
         }
     }
-    
+
     /// method fetch refresh token from online
     /// - Parameters:
     ///   - errorBlock: error Block executes if error is thrown
     ///   - completionBlock: completion block executes on completion
-    private func refreshToken(errorBlock: @escaping ErrorHandleBlock, completionBlock: @escaping (()->Void)){
+    private func refreshToken(errorBlock: ErrorHandleBlock?, completionBlock: @escaping (()->Void)){
         let queryItems = [
             URLQueryItem(name: "grant_type", value: GrantType.refreshToken.rawValue),
             URLQueryItem(name: "refresh_token", value: KeyChainManager.shared.getString(forKey: .refreshToken))]
 
         guard let url = append(queryItems: queryItems, toURLString: "%@/api/v1/oauth/token") else {
-            errorBlock(.urlCantBeGenerated)
+            errorBlock?(.urlCantBeGenerated)
             return
         }
-
         fetchAuthToken(forURL: url, successBlock: completionBlock, errorBlock: errorBlock)
     }
+
 }

@@ -47,7 +47,21 @@ extension UIFont{
     ///font for today
     static var todayLabelFont: UIFont?{
         get{
-            return UIFont(name: "NeuzeitSLTStd-Book", size: 29)
+            return UIFont(name: "NeuzeitSLTStd-Book", size: 34)
+        }
+    }
+
+    ///font for version
+    static var versionLabelFont: UIFont?{
+        get{
+            return UIFont(name: "NeuzeitSLTStd-Book", size: 13)
+        }
+    }
+
+    ///font for menu cell
+    static var menuCellTitleFont: UIFont?{
+        get{
+            return UIFont(name: "NeuzeitSLTStd-Book", size: 20)
         }
     }
 }

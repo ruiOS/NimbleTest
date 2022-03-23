@@ -98,9 +98,8 @@ class NimbleTestTests: XCTestCase {
     func testAuthTokenManager(){
         let auth = AuthTokenFetchManager()
         KeyChainManager.shared.deleteKeyChainData()
-        let (token,error) = auth.getToken(errorBlock: { _ in})
+        let token = auth.getToken(errorBlock: { _ in})
         XCTAssert(token.isEmpty)
-        XCTAssertEqual(AppErrors.noAuthToken, error)
     }
 
     //MARK: - Test Performance

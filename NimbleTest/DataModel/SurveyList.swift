@@ -8,10 +8,10 @@
 import Foundation
 
 ///JSON Data model of survey list
-struct SurveyList: Codable {
+struct SurveyList: Codable, ErrorResponseProtocol {
     let data: [SurveyData]?
     let meta: Meta?
-    let errors: [ErrorModel]?
+    var errors: [ErrorModel]?
 
     // MARK: - Meta
     struct Meta: Codable {

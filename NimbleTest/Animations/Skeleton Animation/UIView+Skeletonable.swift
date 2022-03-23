@@ -37,6 +37,7 @@ extension Skeletonable where Self: UIView{
         return group
     }
 
+    ///starts skeleton animation
     func startSkeletonAnimation(){
         removeSkeletonAnimation()
         addGradient()
@@ -44,6 +45,7 @@ extension Skeletonable where Self: UIView{
         setCornerRadiusForSkeleton()
     }
 
+    ///ad Gradients for skeleton animation
     func addGradient(){
         addSingleGradient()
     }
@@ -67,21 +69,26 @@ extension Skeletonable where Self: UIView{
         gradient.add(animationGroup, forKey: "backgroundColor")
     }
 
+    ///removes skeleton animation
     func removeSkeletonAnimation(){
         self.skeletonGradients.forEach({$0.removeFromSuperlayer()})
         self.skeletonGradients.removeAll()
     }
 
+    ///sets corner radius for skeleton
     func setCornerRadiusForSkeleton(){
         setCornerRadiusForSkeleton(forHeight: frame.height)
     }
-
+    
+    /// sets corner radius for skeleton using given height
+    /// - Parameter height: aize of the corner radius
     func setCornerRadiusForSkeleton(forHeight height: CGFloat){
         skeletonGradients.forEach({
             $0.cornerRadius = height/2
         })
     }
-
+    
+    /// sets frame for gradient
     func setFrameForGradient() {
         skeletonGradients.forEach({
             if frame.height > 20{
@@ -95,6 +102,7 @@ extension Skeletonable where Self: UIView{
 }
 
 extension UIView{
+    ///method shows skeleton for all subViews in view
     func showSkeletonForSubViews(){
         self.subviews.forEach({ view in
             autoreleasepool{
@@ -105,6 +113,7 @@ extension UIView{
         })
     }
 
+    ///method hides skeleton for all subViews in view
     func removeSkeletonAnimationForSubViews(){
         self.subviews.forEach({ view in
             autoreleasepool{

@@ -31,6 +31,8 @@ extension UILabel: Skeletonable{
         }
     }
 
+    /// returns skeletons that can be set in a label
+    /// - Returns: skeletons that can be set in a label
     private func skeletonCount() -> Int{
         switch numberOfLines{
         case 0:
@@ -81,3 +83,4 @@ extension UILabel: Skeletonable{
     }
 
 }
+

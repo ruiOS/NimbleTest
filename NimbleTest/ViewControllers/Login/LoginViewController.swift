@@ -123,7 +123,30 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
     ///login Session manager to perform login Session URL Requests
     private let loginSessionManager = LoginSessionManager()
 
+    ///View model fo the login view
     private let loginViewModel = LoginViewModel()
+
+    ///returns if animation is required for view
+    private let isAnimationRequired: Bool
+
+    //MARK: - Init
+
+    /// creates LoginViewController object
+    /// - Parameter isAnimationRequired: pass if animation is required
+    convenience init(isAnimationRequired: Bool) {
+        self.init(isAnimationRequired)
+    }
+
+    /// creates LoginViewController objec
+    /// - Parameter isAnimationRequired: pass if animation is required
+    private init(_ isAnimationRequired: Bool){
+        self.isAnimationRequired = isAnimationRequired
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     //MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -143,10 +166,16 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
         //DataModel
         setDataModel()
 
-        //Animate Views
-        displayLogoImageView(completion: { [weak self] in
-            self?.animateViews()
-        })
+        if isAnimationRequired{
+            //Animate Views
+            displayLogoImageView(completion: { [weak self] in
+                DispatchQueue.main.async {
+                    self?.animateViews()
+                }
+            })
+        }else{
+            showViewsWithOutAnimation()
+        }
     }
 
     //MARK: - Data Model
@@ -308,7 +337,7 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
         logoCenterYAnchor.isActive  = false
         UIView.animate(withDuration: 0.8) { [weak self] in
             guard let weakSelf = self else { return }
-            weakSelf.createLogoAnimation()
+            weakSelf.setLogoPositionPostAnimation()
             blurEffectView.alpha = 0.95
             weakSelf.view.layoutIfNeeded()
         }
@@ -323,10 +352,22 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
     }
 
     ///method animate logoimageView position
-    private func createLogoAnimation(){
+    private func setLogoPositionPostAnimation(){
         logoHeightAnchor.constant = logoHeightPostAnimation
         logoWidthAnchor.constant = logoWidthPostAnimation
         NSLayoutConstraint(item: nimbleLogoImageView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 0.25, constant: 0).isActive = true
+    }
+    
+    /// Display views without animation
+    private func showViewsWithOutAnimation(){
+        nimbleLogoImageView.alpha = 1
+
+        let blurEffectView = addBlurEffectView()
+        blurEffectView.alpha = 0.95
+        loginView.alpha = 1
+        logoCenterYAnchor.isActive  = false
+        setLogoPositionPostAnimation()
+        view.layoutIfNeeded()
     }
 
     //MARK: - Authentication

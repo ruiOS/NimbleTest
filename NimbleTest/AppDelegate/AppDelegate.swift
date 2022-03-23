@@ -22,19 +22,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            !token.isEmpty{
             window?.rootViewController = SurveyListViewController()
         }else{
-            window?.rootViewController = LoginViewController()
+            window?.rootViewController = LoginViewController(isAnimationRequired: true)
         }
 
         window?.makeKeyAndVisible()
 
         return true
     }
-
-    func showLoginView(){
+    
+    /// method sets LoginViewController as rootViewController
+    /// - Parameter isWithAnimation: pass if animation is required for root view controller
+    func showLoginView(isWithAnimation: Bool){
         DispatchQueue.main.async { [weak self] in
-            self?.window?.rootViewController = LoginViewController()
+            self?.window?.rootViewController = LoginViewController(isAnimationRequired: isWithAnimation)
         }
-        
     }
 
 }

@@ -16,7 +16,7 @@ class LoginSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProtocol,
     /// - Parameters:
     ///   - emailID: emailID of the user
     ///   - password: Password of the user
-    ///   - successBlock: block called on comletion
+    ///   - successBlock: block called on completion
     ///   - errorBlock: block called if error is thrown
     func getLoginDetails(emailID: String, password: String, successBlock: @escaping (()-> Void), errorBlock: @escaping ErrorHandleBlock){
 

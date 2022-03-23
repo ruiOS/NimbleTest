@@ -8,7 +8,11 @@
 import Foundation
 
 ///ViewModel for Survey List View Controller
-class SurveyListViewModel{
+class SurveyListViewModel: UserViewModelProtocol{
+
+    var userName: String = ""
+
+    var userImageData: Data?
 
     var surveys = [SurveyViewVM]()
 
@@ -26,12 +30,6 @@ class SurveyListViewModel{
         return dateFormatter.string(from: Date())
     }()
 
-    var profileImage: Data?
-
     var pageChanged:(()->Void)?
-
-    var isLastPage: Bool {
-        currentPage == numberOfPages-1
-    }
 
 }

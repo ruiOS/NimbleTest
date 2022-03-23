@@ -8,9 +8,7 @@
 import Foundation
 
 ///Network Manager to handle Login
-class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProtocol, CreateURLRequestProtocol, FetchAuthTokenProtocol, ErrorValidationProtocol{
-
-    var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
+class SurveyListSessionManager: NimbleURLSessionBaseClass, QueryItemsProtocol, FetchAuthTokenProtocol{
 
     /// method fetches login/keychain details for the uploaded parameters
     /// - Parameters:
@@ -19,44 +17,7 @@ class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProt
     ///   - successBlock: block called on comletion
     ///   - errorBlock: block called if error is thrown
     func getSurveyDetails(successBlock: @escaping ((SurveyList)-> Void), errorBlock: @escaping ErrorHandleBlock){
-
-        let urlString = generateURLString(fromapi: "%@/api/v1/surveys")
-        guard let url = URL(string: urlString) else {
-            errorBlock(.urlCantBeGenerated)
-            return
-        }
-
-        let authToken = AuthTokenFetchManager().getToken(errorBlock: errorBlock)
-        guard !authToken.isEmpty
-               else {
-            return
-        }
-
-        let urlRequest = createURLRequest(withurl: url, withHTTPMethod: .get,withHeaders: [("Authorization", "Bearer \(authToken)")])
-
-        self.performURLSession(forURLRequest: urlRequest as URLRequest, errorBlock: errorBlock) { [weak self] data in
-            do{
-                let responseObject: SurveyList = try JSONDecoder().decode(SurveyList.self, from: data)
-                if let _ = responseObject.data {
-                    successBlock(responseObject)
-                    return
-                }else if let errors = responseObject.errors,
-                         !errors.isEmpty{
-                    if let weakSelf = self, weakSelf.checkAuthValidation(forErrors: errors){
-                        errorBlock(.invalidAuthToken)
-                    }else{
-                        errorBlock(.serverSideError(errors[0].detail))
-                    }
-                    return
-                }
-                errorBlock(.generalError)
-            }
-            catch{
-                errorBlock(.dataParseError(error.localizedDescription))
-                return
-            }
-        }
-
+        fetchDataForApi(api: "%@/api/v1/surveys", successBlock: successBlock, errorBlock: errorBlock)
     }
 
 }

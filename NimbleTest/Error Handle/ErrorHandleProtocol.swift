@@ -42,14 +42,14 @@ extension ErrorHandleProtocol where Self: UIViewController & LoaderProtocol{
                 weakSelf.displayAlert(withTitle: AppStrings.error_authTokenNotFound, withMessage: AppStrings.error_authenticationError, actions: [UIAlertAction(title: AppStrings.common_logout, style: .destructive, handler: { action in
                     DispatchQueue.global(qos: .background).async {
                         KeyChainManager.shared.deleteKeyChainData()
-                        AppDelegate.shared?.showLoginView()
+                        AppDelegate.shared?.showLoginView(isWithAnimation: false)
                     }
                 })])
             case .invalidAuthToken:
                 weakSelf.displayAlert(withTitle: AppStrings.error_invalidAuthToken, withMessage: AppStrings.error_authenticationError, actions: [UIAlertAction(title: AppStrings.common_logout, style: .destructive, handler: { action in
                     DispatchQueue.global(qos: .background).async {
                         KeyChainManager.shared.deleteKeyChainData()
-                        AppDelegate.shared?.showLoginView()
+                        AppDelegate.shared?.showLoginView(isWithAnimation: false)
                     }
                 })])
             }
