@@ -8,7 +8,7 @@
 import Foundation
 
 ///Network Manager to handle Login
-class LoginSessionManager: NSObject, BaseURLSessionProtocol, FetchAuthTokenProtocol{
+class LoginSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProtocol, CreateURLRequestProtocol, FetchAuthTokenProtocol{
 
     var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
 

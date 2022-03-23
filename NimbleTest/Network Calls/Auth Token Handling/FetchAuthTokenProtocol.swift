@@ -11,7 +11,7 @@ protocol FetchAuthTokenProtocol{
 
 }
 
-extension FetchAuthTokenProtocol where Self: BaseURLSessionProtocol{
+extension FetchAuthTokenProtocol where Self: BaseURLSessionProtocol & CreateURLRequestProtocol{
     
     /// Methods fetches new authToken and replace the value in keychain
     /// - Parameters:

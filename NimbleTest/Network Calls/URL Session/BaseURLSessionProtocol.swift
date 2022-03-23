@@ -32,13 +32,6 @@ protocol BaseURLSessionProtocol{
     ///sessionDelegateClass to handle sessionDelegate methods
     var sessionDelegate: URLSessionDelegate {get set}
 
-    /// method used to append query items to url
-    /// - Parameters:
-    ///   - queryItems: query items to be appended to url
-    ///   - urlString: string value of url to be created
-    /// - Returns: create url using urlString and query Items
-    func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?
-
     func generateURLString(fromapi: String)->String
 
     /// perform's url session
@@ -51,17 +44,6 @@ protocol BaseURLSessionProtocol{
 }
 
 extension BaseURLSessionProtocol{
-
-    func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?{
-        let url: String = generateURLString(fromapi: urlString)
-        
-        let tempQueryItems = queryItems + [ URLQueryItem(name: "client_id", value: "6GbE8dhoz519l2N_F99StqoOs6Tcmm1rXgda4q__rIw"),
-                                   URLQueryItem(name: "client_secret", value: "_ayfIm7BeUAhx2W1OUqi20fwO3uNxfo1QstyKlFCgHw")]
-
-        var urlComps = URLComponents(string: url)
-        urlComps?.queryItems = tempQueryItems
-        return urlComps?.url
-    }
     
     /// Creates string for given api using base domain
     /// - Parameter api: api for string creation
@@ -88,13 +70,45 @@ extension BaseURLSessionProtocol{
         }
         dataTask.resume()
     }
-    
+
+}
+
+protocol QueryItemsProtocol{
+    /// method used to append query items to url
+    /// - Parameters:
+    ///   - queryItems: query items to be appended to url
+    ///   - urlString: string value of url to be created
+    /// - Returns: create url using urlString and query Items
+    func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?
+}
+
+extension QueryItemsProtocol where Self: BaseURLSessionProtocol{
+
+    func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?{
+        let url: String = generateURLString(fromapi: urlString)
+        
+        let tempQueryItems = queryItems + [ URLQueryItem(name: "client_id", value: "6GbE8dhoz519l2N_F99StqoOs6Tcmm1rXgda4q__rIw"),
+                                   URLQueryItem(name: "client_secret", value: "_ayfIm7BeUAhx2W1OUqi20fwO3uNxfo1QstyKlFCgHw")]
+
+        var urlComps = URLComponents(string: url)
+        urlComps?.queryItems = tempQueryItems
+        return urlComps?.url
+    }
+
+}
+
+protocol CreateURLRequestProtocol{
     /// creates url request
     /// - Parameters:
     ///   - url: url for which request need to be created
     ///   - httpMethod: http method type of the request
     ///   - headers: headers to be added for url request
     /// - Returns: url request with specified parameters
+    func createURLRequest(withurl url: URL, withHTTPMethod httpMethod: HTTPMethod, withHeaders headers:[(String,String)]) -> URLRequest
+}
+
+extension CreateURLRequestProtocol{
+
     func createURLRequest(withurl url: URL, withHTTPMethod httpMethod: HTTPMethod, withHeaders headers:[(String,String)] = []) -> URLRequest{
         let urlRequest = NSMutableURLRequest(url: url)
         urlRequest.httpMethod = httpMethod.rawValue

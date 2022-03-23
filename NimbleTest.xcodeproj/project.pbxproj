@@ -38,6 +38,7 @@
 		778061AB27E75EBD000BDCF8 /* NimbleTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778061AA27E75EBD000BDCF8 /* NimbleTestUITests.swift */; };
 		778061AD27E75EBD000BDCF8 /* NimbleTestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778061AC27E75EBD000BDCF8 /* NimbleTestUITestsLaunchTests.swift */; };
 		778061BD27E76BA1000BDCF8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 778061BF27E76BA1000BDCF8 /* Localizable.strings */; };
+		7783656D27EA81E500C2ECE2 /* ImageFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7783656C27EA81E500C2ECE2 /* ImageFetcher.swift */; };
 		779B1D7D27E8D7100033AF67 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 778061BF27E76BA1000BDCF8 /* Localizable.strings */; };
 		779B1D7E27E8D7130033AF67 /* LocalisedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1EF427E786E100DC004C /* LocalisedString.swift */; };
 		779B1D7F27E8D7170033AF67 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1EF227E786B900DC004C /* AppStrings.swift */; };
@@ -110,6 +111,7 @@
 		778061AC27E75EBD000BDCF8 /* NimbleTestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleTestUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		778061BE27E76BA1000BDCF8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		778061C327E76D72000BDCF8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NimbleTest/SupportingFiles/Info.plist; sourceTree = SOURCE_ROOT; };
+		7783656C27EA81E500C2ECE2 /* ImageFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFetcher.swift; sourceTree = "<group>"; };
 		779B1D8227E8DB5B0033AF67 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		779B1D8427E8DC0A0033AF67 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		779B1D8627E8DFD30033AF67 /* TextFieldEditingEventsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldEditingEventsDelegate.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				77DD896B27E7BCC4000550CD /* BaseURLSessionProtocol.swift */,
 				776E1EFD27E79BA300DC004C /* LoginSessionManager.swift */,
 				7735CA0027EA581A00E523F5 /* SurveyListSessionManager.swift */,
+				7783656C27EA81E500C2ECE2 /* ImageFetcher.swift */,
 			);
 			path = "URL Session";
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				779B1D8927E8E4260033AF67 /* KeyChainManager.swift in Sources */,
 				776E1F0127E79C4B00DC004C /* LoginResponse.swift in Sources */,
 				776E1EF127E784D000DC004C /* UIFont+Extension.swift in Sources */,
+				7783656D27EA81E500C2ECE2 /* ImageFetcher.swift in Sources */,
 				7735C9EA27E9D43700E523F5 /* FetchAuthTokenProtocol.swift in Sources */,
 				779B1D8C27E8E9700033AF67 /* LoaderProtocol.swift in Sources */,
 				776E1EF327E786B900DC004C /* AppStrings.swift in Sources */,

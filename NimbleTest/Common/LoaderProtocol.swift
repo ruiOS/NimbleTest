@@ -10,7 +10,7 @@ import SVProgressHUD
 
 ///Protocol used to handle loader
 protocol LoaderProtocol{
-
+    func dismissLoading()
 }
 
 extension LoaderProtocol where Self: UIViewController{
@@ -35,8 +35,11 @@ extension LoaderProtocol where Self: UIViewController{
 
     ///Dismiss hud in main view of ViewController and enables user interaction
     func dismissHud(){
+        dismissLoading()
         SVProgressHUD.dismiss()
         self.view.isUserInteractionEnabled = true
     }
+
+    func dismissLoading(){}
 
 }

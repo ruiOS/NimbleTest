@@ -8,7 +8,7 @@
 import Foundation
 
 ///Network Manager to handle Login
-class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, FetchAuthTokenProtocol{
+class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProtocol, CreateURLRequestProtocol, FetchAuthTokenProtocol{
 
     var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
 
@@ -18,7 +18,7 @@ class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, FetchAuthToken
     ///   - password: Password of the user
     ///   - successBlock: block called on comletion
     ///   - errorBlock: block called if error is thrown
-    func getSurveyDetails(successBlock: @escaping (()-> Void), errorBlock: @escaping ErrorHandleBlock){
+    func getSurveyDetails(successBlock: @escaping ((SurveyList)-> Void), errorBlock: @escaping ErrorHandleBlock){
 
         let urlString = generateURLString(fromapi: "%@/api/v1/surveys")
         guard let url = URL(string: urlString) else {
@@ -33,13 +33,12 @@ class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, FetchAuthToken
         }
 
         let urlRequest = createURLRequest(withurl: url, withHTTPMethod: .get,withHeaders: [("Authorization", "Bearer \(authToken)")])
-        fetchAuthToken(forURL: url, successBlock: successBlock, errorBlock: errorBlock)
 
         self.performURLSession(forURLRequest: urlRequest as URLRequest, errorBlock: errorBlock) { data in
             do{
                 let responseObject: SurveyList = try JSONDecoder().decode(SurveyList.self, from: data)
-                if let responseData = responseObject.data {
-                    successBlock()
+                if let _ = responseObject.data {
+                    successBlock(responseObject)
                     return
                 }else if let errors = responseObject.errors,
                          !errors.isEmpty{

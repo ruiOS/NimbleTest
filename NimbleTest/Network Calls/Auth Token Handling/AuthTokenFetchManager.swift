@@ -8,7 +8,7 @@
 import Foundation
 
 ///Handles AuthToken fetch
-class AuthTokenFetchManager: BaseURLSessionProtocol, FetchAuthTokenProtocol{
+class AuthTokenFetchManager: BaseURLSessionProtocol, QueryItemsProtocol, CreateURLRequestProtocol, FetchAuthTokenProtocol{
 
     var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SurveyListViewController:UIViewController{
+class SurveyListViewController:UIViewController, LoaderProtocol, ErrorHandleProtocol {
 
     //MARK: - Views
 
@@ -56,6 +56,7 @@ class SurveyListViewController:UIViewController{
         tempPageControl.backgroundColor = .clear
         tempPageControl.currentPageIndicatorTintColor = .white
         tempPageControl.contentMode = .left
+        tempPageControl.numberOfPages = 3
         tempPageControl.isSkeletonEnabled =  true
         return tempPageControl
     }()
@@ -99,7 +100,7 @@ class SurveyListViewController:UIViewController{
     }()
 
     ///next button to move to next slide of survey
-    private let nextButton: UIButton = {
+    private let enterButton: UIButton = {
         let tempButton = UIButton()
         tempButton.translatesAutoresizingMaskIntoConstraints = false
         tempButton.backgroundColor = .white
@@ -111,7 +112,7 @@ class SurveyListViewController:UIViewController{
     //MARK: - View Data
 
     ///trailing constraint of next button
-    lazy private var nextButtonTrailingConstraint = nextButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: nextButtonWidth)
+    lazy private var nextButtonTrailingConstraint = enterButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: nextButtonWidth)
 
     /// width of next button
     private let nextButtonWidth: CGFloat = 56
@@ -130,7 +131,10 @@ class SurveyListViewController:UIViewController{
     }
 
     //MARK: - Manager
-    let surveyListSessionManager = SurveyListSessionManager()
+    private let surveyListSessionManager = SurveyListSessionManager()
+    private let imageFetchManager = ImageFetcher()
+
+    private let viewModel: SurveyListViewModel = SurveyListViewModel()
 
     //MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -141,18 +145,105 @@ class SurveyListViewController:UIViewController{
         addBackGroundImageView()
         addPageControl()
         addTitleLabel()
-        addNextButton()
+        addEnterButton()
         addDescriptionLabel()
         addDateLabel()
         addTodayLabel()
         addProfileButton()
 
         //make buttons circular
-        turnViewIntoCircularView(forView: nextButton)
+        turnViewIntoCircularView(forView: enterButton)
         turnViewIntoCircularView(forView: profileButton)
 
         view.showSkeletonForSubViews()
 
+        fecthSurveyData()
+    }
+
+    //MARK: - DataModel
+    func setDataModel(){
+
+        pageControl.numberOfPages = viewModel.numberOfPages
+        dateLabel.text = viewModel.dateString
+        todayLabel.text = viewModel.todayString
+
+        viewModel.pageChanged = { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                guard let weakSelf = self else {return}
+                let model = weakSelf.viewModel
+                weakSelf.nextButtonTrailingConstraint.constant = model.isLastPage ? weakSelf.nextButtonWidth :  -weakSelf.edgeSpacing
+                weakSelf.view.layoutIfNeeded()
+
+
+                let currentPageModel = model.surveys[weakSelf.viewModel.currentPage]
+                if let imgData = currentPageModel.backGroundImageData{
+                    print("is image data present")
+                    weakSelf.backGroundImageView.image = UIImage(data: imgData)
+                }
+                print("checked image data present")
+                weakSelf.titleLabel.text = currentPageModel.title
+                weakSelf.descriptionLabel.text = currentPageModel.description
+            }
+        }
+
+        viewModel.pageChanged?()
+    }
+
+    func fecthSurveyData(){
+        let group = DispatchGroup()
+        let group2 = DispatchGroup()
+
+        group.enter()
+
+        surveyListSessionManager.getSurveyDetails { [weak self] data in
+
+            group2.enter()
+            guard let weakSelf = self else {return}
+            DispatchQueue.global(qos: .background).async(flags: .barrier) {
+                weakSelf.viewModel.currentPage = 0
+                if let pages = data.meta?.pages{
+                    weakSelf.viewModel.numberOfPages = pages
+                }
+                weakSelf.viewModel.surveys.removeAll()
+                group2.leave()
+            }
+            group2.wait()
+
+            data.data?.forEach({
+                group2.enter()
+                let newSurvey = SurveyViewVM(fromData: $0)
+                DispatchQueue.global(qos: .background).async(flags: .barrier) {
+                    weakSelf.viewModel.surveys.append(newSurvey)
+                    group2.leave()
+                }
+                group2.wait()
+                group.enter()
+                weakSelf.imageFetchManager.fetchImage(forURL: $0.attributes.coverImageURL) { error in
+                    weakSelf.handle(error: error)
+                    group.suspend()
+                } completionBlock: { data in
+                    newSurvey.addBackGroundImageData(data: data)
+                    group.leave()
+                    
+                }
+            })
+            group.leave()
+        } errorBlock: { [weak self] error in
+            self?.handle(error: error)
+            group.suspend()
+        }
+
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let weakSelf = self else {return}
+            weakSelf.dismissLoading()
+            weakSelf.setDataModel()
+        }
+
+    }
+
+    //MARK: - Hud
+    func dismissLoading() {
+        self.view.removeSkeletonAnimationForSubViews()
     }
 
     //MARK: - Add View
@@ -173,7 +264,6 @@ class SurveyListViewController:UIViewController{
     private func addPageControl(){
         self.view.addSubview(pageControl)
 
-        pageControl.numberOfPages = 3
         NSLayoutConstraint.activate([
             pageControl.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: -15),
             pageControl.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: -edgeSpacing),
@@ -200,10 +290,10 @@ class SurveyListViewController:UIViewController{
 
         NSLayoutConstraint.activate([
             descriptionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: edgeSpacing),
-            descriptionLabel.trailingAnchor.constraint(equalTo: self.nextButton.leadingAnchor, constant: -edgeSpacing),
+            descriptionLabel.trailingAnchor.constraint(equalTo: self.enterButton.leadingAnchor, constant: -edgeSpacing),
             descriptionLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 16),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 42),
-            nextButton.bottomAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor)
+            enterButton.bottomAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor)
         ])
     }
 
@@ -213,7 +303,7 @@ class SurveyListViewController:UIViewController{
 
         NSLayoutConstraint.activate([
             dateLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: edgeSpacing),
-            dateLabel.widthAnchor.constraint(equalToConstant: 117),
+            dateLabel.widthAnchor.constraint(equalToConstant: 200),
             dateLabel.topAnchor.constraint(equalTo: self.safeTopAnchor, constant: 16),
             dateLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
@@ -244,14 +334,19 @@ class SurveyListViewController:UIViewController{
     }
 
     ///adds addNextButton to the view
-    private func addNextButton(){
-        self.view.addSubview(nextButton)
+    private func addEnterButton(){
+        self.view.addSubview(enterButton)
+        enterButton.addTarget(self, action: #selector(enterButtonTapped), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             nextButtonTrailingConstraint,
-            nextButton.widthAnchor.constraint(equalToConstant: nextButtonWidth),
-            nextButton.heightAnchor.constraint(equalTo: nextButton.widthAnchor),
+            enterButton.widthAnchor.constraint(equalToConstant: nextButtonWidth),
+            enterButton.heightAnchor.constraint(equalTo: enterButton.widthAnchor),
         ])
+    }
+
+    @objc func enterButtonTapped(){
+        
     }
     
     /// makes given view circular
