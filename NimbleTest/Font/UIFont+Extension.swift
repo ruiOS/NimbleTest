@@ -26,14 +26,14 @@ extension UIFont{
     ///font for survey title
     static var surveyTitleLabelFont: UIFont?{
         get{
-            return UIFont(name: "NeuzeitSLTStd-Book", size: 25)
+            return UIFont(name: "NeuzeitSLTStd-Book", size: 28)
         }
     }
 
     ///font for survey subtitle
     static var descriptionLabelFont: UIFont?{
         get{
-            return UIFont(name: "NeuzeitSLTStd-Book", size: 14)
+            return UIFont(name: "NeuzeitSLTStd-Book", size: 17)
         }
     }
 

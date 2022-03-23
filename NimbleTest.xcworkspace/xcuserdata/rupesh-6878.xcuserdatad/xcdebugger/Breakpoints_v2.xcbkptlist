@@ -14,8 +14,8 @@
             filePath = "NimbleTest/ViewControllers/Surveys/SurveyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "349"
-            endingLineNumber = "349"
+            startingLineNumber = "345"
+            endingLineNumber = "345"
             landmarkName = "enterButtonTapped()"
             landmarkType = "7">
          </BreakpointContent>

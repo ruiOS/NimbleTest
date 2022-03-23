@@ -29,7 +29,7 @@ extension FetchAuthTokenProtocol where Self: BaseURLSessionProtocol & CreateURLR
                     return
                 }else if let errors = responseObject.errors,
                          !errors.isEmpty{
-                    errorBlock(.authenticationError(errors[0].detail))
+                    errorBlock(.serverSideError(errors[0].detail))
                     return
                 }
                 errorBlock(.generalError)

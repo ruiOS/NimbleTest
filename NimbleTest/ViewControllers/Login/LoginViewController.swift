@@ -119,6 +119,7 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
     ///height of login View
     private lazy var loginViewHeight: CGFloat = (emailTextFieldHeight * 3) + (2 * textFieldSpacing)
 
+    //MARK: - Manager
     ///login Session manager to perform login Session URL Requests
     private let loginSessionManager = LoginSessionManager()
 

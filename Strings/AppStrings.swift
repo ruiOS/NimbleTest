@@ -64,6 +64,9 @@ struct AppStrings{
     @LocalisedString(key: "nimbleTest.ios.error.logoutAndLoginAgain", comment: "Please Kindly Logout And Login Again")
     static var error_logoutAndLoginAgain: String
 
+    @LocalisedString(key: "nimbleTest.ios.error.invalidAuthToken", comment: "Invalid AuthToken")
+    static var error_invalidAuthToken: String
+
     @LocalisedString(key: "nimbleTest.ios.surveyView.today", comment: "Today")
     static var surveyView_today: String
 

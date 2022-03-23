@@ -119,3 +119,18 @@ extension CreateURLRequestProtocol{
         return urlRequest as URLRequest
     }
 }
+
+protocol ErrorValidationProtocol{
+    func checkAuthValidation(forErrors errors: [ErrorModel]?) -> Bool
+}
+
+extension ErrorValidationProtocol{
+    func checkAuthValidation(forErrors errors: [ErrorModel]?) -> Bool{
+        guard let errors = errors else {
+            return false
+        }
+
+        return  errors.contains(where: {$0.code == .invalidToken})
+
+    }
+}

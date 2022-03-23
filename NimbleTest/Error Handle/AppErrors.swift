@@ -18,4 +18,5 @@ enum AppErrors: Error, Equatable{
     case requestTimedOut
     case noDataFound
     case noAuthToken
+    case invalidAuthToken
 }

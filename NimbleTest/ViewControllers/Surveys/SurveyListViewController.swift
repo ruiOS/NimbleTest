@@ -173,14 +173,10 @@ class SurveyListViewController:UIViewController, LoaderProtocol, ErrorHandleProt
                 let model = weakSelf.viewModel
                 weakSelf.nextButtonTrailingConstraint.constant = model.isLastPage ? weakSelf.nextButtonWidth :  -weakSelf.edgeSpacing
                 weakSelf.view.layoutIfNeeded()
-
-
                 let currentPageModel = model.surveys[weakSelf.viewModel.currentPage]
                 if let imgData = currentPageModel.backGroundImageData{
-                    print("is image data present")
                     weakSelf.backGroundImageView.image = UIImage(data: imgData)
                 }
-                print("checked image data present")
                 weakSelf.titleLabel.text = currentPageModel.title
                 weakSelf.descriptionLabel.text = currentPageModel.description
             }

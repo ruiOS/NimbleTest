@@ -8,7 +8,7 @@
 import Foundation
 
 ///Network Manager to handle Login
-class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProtocol, CreateURLRequestProtocol, FetchAuthTokenProtocol{
+class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProtocol, CreateURLRequestProtocol, FetchAuthTokenProtocol, ErrorValidationProtocol{
 
     var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
 
@@ -34,7 +34,7 @@ class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProt
 
         let urlRequest = createURLRequest(withurl: url, withHTTPMethod: .get,withHeaders: [("Authorization", "Bearer \(authToken)")])
 
-        self.performURLSession(forURLRequest: urlRequest as URLRequest, errorBlock: errorBlock) { data in
+        self.performURLSession(forURLRequest: urlRequest as URLRequest, errorBlock: errorBlock) { [weak self] data in
             do{
                 let responseObject: SurveyList = try JSONDecoder().decode(SurveyList.self, from: data)
                 if let _ = responseObject.data {
@@ -42,7 +42,11 @@ class SurveyListSessionManager: NSObject, BaseURLSessionProtocol, QueryItemsProt
                     return
                 }else if let errors = responseObject.errors,
                          !errors.isEmpty{
-                    errorBlock(.authenticationError(errors[0].detail))
+                    if let weakSelf = self, weakSelf.checkAuthValidation(forErrors: errors){
+                        errorBlock(.invalidAuthToken)
+                    }else{
+                        errorBlock(.serverSideError(errors[0].detail))
+                    }
                     return
                 }
                 errorBlock(.generalError)

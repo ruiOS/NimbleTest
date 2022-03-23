@@ -7,10 +7,16 @@
 
 import Foundation
 
+enum ErrorCodeEnum:String, Codable{
+    case invalidToken = "invalid_token"
+    case invalidGrant = "invalid_grant"
+}
+
 ///Error Data Model for Network calls
 struct ErrorModel: Codable {
     let source: Source
-    let detail, code: String
+    let detail: String
+    let code: ErrorCodeEnum
 
     struct Source: Codable {
         let parameter: String
