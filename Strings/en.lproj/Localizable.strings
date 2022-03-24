@@ -6,16 +6,20 @@
   
 */
 
+//Common
+"nimbleTest.ios.common.ok" = "Ok";
+"nimbleTest.ios.common.logout"  = "Logout";
+
+//Login
 "nimbleTest.ios.login" = "Login";
 "nimbleTest.ios.login.forgotPassword" = "Forgot?";
 "nimbleTest.ios.login.email" = "Email";
 "nimbleTest.ios.login.password" = "Password";
-"nimbleTest.ios.common.ok" = "Ok";
-"nimbleTest.ios.common.logout"  = "Logout";
+"nimbleTest.ios.login.error.enterEmail"= "Please kindly enter email and try again";
+"nimbleTest.ios.login.error.enterPassword" = "lease kindly enter Password and try again";
 
 //Error
 "nimbleTest.ios.error.title.anErrorOccured" = "An Error Occured";
-"nimbleTest.ios.error.title.dataInadequate" = "Data Inadequate";
 "nimbleTest.ios.error.title.dataParseError" = "DataParse Error";
 "nimbleTest.ios.error.title.AuthTokenNotFound"  = "Auth Token Not Found";
 
@@ -24,6 +28,10 @@
 "nimbleTest.ios.error.urlCantBeGenerated"   = "Url can't be generated";
 "nimbleTest.ios.error.noNetworkConnection"  = "No network connection";
 "nimbleTest.ios.error.requestTimedOut"      = "Request TimedOut";
-"nimbleTest.ios.error.enterRequiredData"    = "Please enter required data and try again";
 "nimbleTest.ios.error.logoutAndLoginAgain"  = "Please Kindly Logout And Login Again";
+"nimbleTest.ios.error.invalidAuthToken"     = "Invalid AuthToken";
+"nimbleTest.ios.error.dataInadequate"       = "Please kindly enter data and try again";
+"nimbleTest.ios.error.noDataReturned"       = "No data returned";
 
+//Survey
+"nimbleTest.ios.surveyView.today"  = "Today";

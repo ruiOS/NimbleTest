@@ -1,5 +1,5 @@
 //
-//  NimbleTestTests.swift
+//  KeyChainManagerTests.swift
 //  NimbleTestTests
 //
 //  Created by rupesh on 20/03/22.
@@ -8,15 +8,7 @@
 import XCTest
 @testable import NimbleTest
 
-class NimbleTestTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+class KeyChainManagerTests: XCTestCase {
 
     //MARK: - KeyChainManager
     func testKeyChainManager(){
@@ -98,17 +90,8 @@ class NimbleTestTests: XCTestCase {
     func testAuthTokenManager(){
         let auth = AuthTokenFetchManager()
         KeyChainManager.shared.deleteKeyChainData()
-        let (token,error) = auth.getToken(errorBlock: { _ in})
+        let token = auth.getToken(errorBlock: { _ in})
         XCTAssert(token.isEmpty)
-        XCTAssertEqual(AppErrors.noAuthToken, error)
-    }
-
-    //MARK: - Test Performance
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
     }
 
 }

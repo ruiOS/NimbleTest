@@ -21,6 +21,12 @@ struct AppStrings{
     @LocalisedString(key: "nimbleTest.ios.login.password", comment: "Password")
     static var login_password: String
 
+    @LocalisedString(key: "nimbleTest.ios.login.error.enterEmail", comment: "Email")
+    static var login_error_enterEmail: String
+
+    @LocalisedString(key: "nimbleTest.ios.login.error.enterPassword", comment: "Password")
+    static var login_error_enterPassword: String
+
     @LocalisedString(key: "nimbleTest.ios.login", comment: "Login")
     static var login: String
 
@@ -34,7 +40,7 @@ struct AppStrings{
     @LocalisedString(key: "nimbleTest.ios.error.title.anErrorOccured", comment: "An Error Occured")
     static var error_anErrorOccured: String
 
-    @LocalisedString(key: "nimbleTest.ios.error.title.dataInadequate", comment: "Data Inadequate")
+    @LocalisedString(key: "nimbleTest.ios.error.dataInadequate", comment: "Please kindly enter data and try again")
     static var error_dataInadequate: String
 
     @LocalisedString(key: "nimbleTest.ios.error.title.dataParseError", comment: "DataParse Error")
@@ -45,6 +51,9 @@ struct AppStrings{
 
     @LocalisedString(key: "nimbleTest.ios.error.authenticationError", comment: "Authentication Error")
     static var error_authenticationError: String
+
+    @LocalisedString(key: "nimbleTest.ios.error.noDataReturned", comment: "No data returned")
+    static var error_noDataReturned: String
 
     @LocalisedString(key: "nimbleTest.ios.error.pleaseTryAgain", comment: "Please try again")
     static var error_pleaseTryAgain: String
@@ -58,10 +67,12 @@ struct AppStrings{
     @LocalisedString(key: "nimbleTest.ios.error.requestTimedOut", comment: "Request TimedOut")
     static var error_requestTimedOut: String
 
-    @LocalisedString(key: "nimbleTest.ios.error.enterRequiredData", comment: "Please enter required data and try again")
-    static var error_enterRequiredData: String
-
     @LocalisedString(key: "nimbleTest.ios.error.logoutAndLoginAgain", comment: "Please Kindly Logout And Login Again")
     static var error_logoutAndLoginAgain: String
 
+    @LocalisedString(key: "nimbleTest.ios.error.invalidAuthToken", comment: "Invalid AuthToken")
+    static var error_invalidAuthToken: String
+
+    @LocalisedString(key: "nimbleTest.ios.surveyView.today", comment: "Today")
+    static var surveyView_today: String
 }

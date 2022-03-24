@@ -7,8 +7,10 @@
 
 import Foundation
 
+///ViewModel for login screen
 class LoginViewModel{
 
+    ///Boxed Data for the View
     var data: Box<LoginViewData> = Box(LoginViewData(email: TextFieldInput(placeHolder: AppStrings.login_email, text: nil),
                                                      password: TextFieldInput(placeHolder: AppStrings.login_password, text: nil)))
 
@@ -16,9 +18,13 @@ class LoginViewModel{
 
 struct LoginViewData{
 
+    ///TextFieldInput Model for emailField
     var email: TextFieldInput
+
+    ///TextFieldInput Model for passwordField
     var password: TextFieldInput
 
+    ///returns if login is enabled
     var isLoginEnabled: Bool {
         guard  let email = email.text,
            let password = password.text,
@@ -30,7 +36,10 @@ struct LoginViewData{
     }
 }
 
+///TextVield Input Data Model
 struct TextFieldInput{
+    ///placeHolder for the text field
     var placeHolder: String?
+    ///text for the text field
     var text: String?
 }
