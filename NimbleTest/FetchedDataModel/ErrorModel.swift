@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol ErrorResponseProtocol{
-    var errors: [ErrorModel]? {get set}
-}
-
 enum ErrorCodeEnum:String, Codable{
     case invalidToken = "invalid_token"
     case invalidGrant = "invalid_grant"

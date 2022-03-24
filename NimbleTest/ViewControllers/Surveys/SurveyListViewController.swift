@@ -8,18 +8,9 @@
 import UIKit
 
 ///Shows list of surveys
-class SurveyListViewController:UIViewController, LoaderProtocol, ErrorHandleProtocol, CircleViewProtocol, MenuControllerDelegate {
+class SurveyListViewController:NimbleViewController, LoaderProtocol, CircleViewProtocol, MenuControllerDelegate, NetworkCallErrorProtcol, DisplayAlertProtocol, TokenGenerationErrorProtocol, DataFetchErrorProtocol {
 
     //MARK: - Views
-
-    ///BackGround imageView
-    private let backGroundImageView: UIImageView = {
-        let tempImageView = UIImageView()
-        tempImageView.translatesAutoresizingMaskIntoConstraints = false
-        tempImageView.contentMode = .scaleAspectFill
-        tempImageView.backgroundColor = .black
-        return tempImageView
-    }()
 
     ///date label containing today date
     private let dateLabel: UILabel = {
@@ -192,6 +183,10 @@ class SurveyListViewController:UIViewController, LoaderProtocol, ErrorHandleProt
     ///network layer to logout user
     private let logoutSessionManager = LogoutSessionManager()
 
+    private let authFetcher = AuthTokenFetchManager()
+
+    private let networkDataParser = NetworkDataParser()
+
     private let viewModel: SurveyListViewModel = SurveyListViewModel()
 
     //MARK: - View LifeCycle
@@ -326,81 +321,93 @@ class SurveyListViewController:UIViewController, LoaderProtocol, ErrorHandleProt
     //MARK: - Data fetch
     /// fetches data from online
     private func fecthDataFromOnline(){
+
+        let authToken = authFetcher.getToken { [weak self] error in
+            self?.handle(tokenGenerationError: error)
+        }
+        if authToken.isEmpty {return}
+
         let group = DispatchGroup()
         let group2 = DispatchGroup()
 
-        let errorBlock: ((AppErrors)->Void) = { [weak self] error in
-            self?.handle(error: error)
+        let errorBlock: ((NetworkCallError)->Void) = { [weak self] error in
+            self?.handle(networkCallError: error)
             group.suspend()
         }
 
         group.enter()
 
-        surveyListSessionManager.getSurveyDetails (successBlock: { [weak self] data in
-
+        surveyListSessionManager.getSurveyDetails(usingAuthToken: authToken, successBlock: { [weak self] surveyList in
             guard let weakSelf = self else {
                 group.suspend()
                 return
             }
-
-            group2.enter()
             DispatchQueue.global(qos: .background).async(flags: .barrier) {
-                weakSelf.viewModel.currentPage = 0
-                if let pages = data.meta?.pages{
+                if let pages = surveyList.meta?.pages{
                     weakSelf.viewModel.numberOfPages = pages
                 }
-                weakSelf.viewModel.surveys.removeAll()
-                group2.leave()
             }
-            group2.wait()
-
-            data.data?.forEach({
+            weakSelf.networkDataParser.parse(Data: surveyList) { surveyData in
                 group2.enter()
-                let newSurvey = SurveyViewVM(fromData: $0)
                 DispatchQueue.global(qos: .background).async(flags: .barrier) {
-                    weakSelf.viewModel.surveys.append(newSurvey)
+                    weakSelf.viewModel.currentPage = 0
+                    weakSelf.viewModel.surveys.removeAll()
+                    group2.leave()
+                }
+                group2.wait()
+                surveyData.forEach({
+                    group2.enter()
+                    let newSurvey = SurveyViewVM(fromData: $0)
+                    DispatchQueue.global(qos: .background).async(flags: .barrier) {
+                        weakSelf.viewModel.surveys.append(newSurvey)
+                        group2.leave()
+                    }
+                    group2.wait()
+
+                    group.enter()
+                    weakSelf.imageFetchManager.fetchImage(forURL: $0.attributes.coverImageURL, errorBlock: errorBlock) { imageData in
+                        newSurvey.addBackGroundImageData(data: imageData)
+                        group.leave()
+                    }
+                })
+                group.leave()
+            } errorBlock: { error in
+                weakSelf.handle(dataFetchError: error)
+                group.suspend()
+            }
+
+        }, errorBlock: errorBlock)
+
+
+        group.enter()
+
+        userDetailsFetcher.fetchUserDetails(usingAuthToken: authToken, successBlock: { [weak self]  userData in
+            guard let weakSelf = self else {
+                group.suspend()
+                return
+            }
+            weakSelf.networkDataParser.parse(Data: userData) { user in
+                group2.enter()
+                DispatchQueue.global(qos: .background).async(flags: .barrier) {
+                    weakSelf.viewModel.addUserDetails(userData:  user)
+                    weakSelf.menuController.viewModel.addUserDetails(userData:  user)
                     group2.leave()
                 }
                 group2.wait()
 
                 group.enter()
-                weakSelf.imageFetchManager.fetchImage(forURL: $0.attributes.coverImageURL, errorBlock: errorBlock) { imageData in
-                    newSurvey.addBackGroundImageData(data: imageData)
+                weakSelf.imageFetchManager.fetchImage(forURL: user.attributes.avatarURL, errorBlock: errorBlock) { imageData in
+                    weakSelf.viewModel.addUserImageData(data: imageData)
+                    weakSelf.menuController.viewModel.addUserImageData(data: imageData)
                     group.leave()
                 }
-            })
-            group.leave()
-        }, errorBlock: errorBlock)
-
-        group.enter()
-
-        userDetailsFetcher.fetchUserDetails(successBlock: { [weak self] userData in
-            guard let weakSelf = self else {
-                group.suspend()
-                return
-            }
-
-            guard let data = userData.data else{
-                weakSelf.handle(error: .generalError)
-                group.suspend()
-                return
-            }
-
-            group2.enter()
-            DispatchQueue.global(qos: .background).async(flags: .barrier) {
-                weakSelf.viewModel.addUserDetails(userData: data)
-                weakSelf.menuController.viewModel.addUserDetails(userData: data)
-                group2.leave()
-            }
-            group2.wait()
-
-            group.enter()
-            weakSelf.imageFetchManager.fetchImage(forURL: data.attributes.avatarURL, errorBlock: errorBlock) { imageData in
-                weakSelf.viewModel.addUserImageData(data: imageData)
-                weakSelf.menuController.viewModel.addUserImageData(data: imageData)
                 group.leave()
+
+            } errorBlock: {error in
+                weakSelf.handle(dataFetchError: error)
+                group.suspend()
             }
-            group.leave()
+
         }, errorBlock: errorBlock)
 
         group.notify(queue: DispatchQueue.main) { [weak self] in
@@ -419,18 +426,6 @@ class SurveyListViewController:UIViewController, LoaderProtocol, ErrorHandleProt
     }
 
     //MARK: - Add View
-
-    ///method adds backGroundImageView to the view
-    private func addBackGroundImageView(){
-        self.view.addSubview(backGroundImageView)
-
-        NSLayoutConstraint.activate([
-            backGroundImageView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            backGroundImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            backGroundImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            backGroundImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        ])
-    }
 
     ///method adds pagecontrol to the view
     private func addPageControl(){
@@ -559,7 +554,11 @@ class SurveyListViewController:UIViewController, LoaderProtocol, ErrorHandleProt
     //MARK: - Button Tapped Actions
     /// calls when enter button is tapped
     @objc func enterButtonTapped(){
-        
+        /*
+        let takeSurveyVC = TakeSurveyViewController()
+        takeSurveyVC.modalPresentationStyle = .fullScreen
+        self.present(takeSurveyVC, animated: true)
+         */
     }
     
     /// calls when profile button is tapped

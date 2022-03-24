@@ -16,12 +16,12 @@ protocol AuthValidationProtocol{
 }
 
 extension AuthValidationProtocol{
+
     func checkAuthValidation(forErrors errors: [ErrorModel]?) -> Bool{
         guard let errors = errors else {
             return false
         }
-
         return  errors.contains(where: {$0.code == .invalidToken})
-
     }
+
 }

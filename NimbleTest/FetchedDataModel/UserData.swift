@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct UserData: Codable, ErrorResponseProtocol {
-    let data: User?
+struct UserData: Codable, ResponseDataProtocol {
+
+    var data: User?
     var errors: [ErrorModel]?
 }
 

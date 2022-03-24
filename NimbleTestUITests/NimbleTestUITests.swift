@@ -32,7 +32,6 @@ class NimbleTestUITests: XCTestCase {
     //MARK: - Login TextCases
 
     func testLoginTestCases(){
-        KeyChainManager.shared.deleteKeyChainData()
         checkLoginSetUp()
         checkEmptyLogin()
         //checkInvalidLogin()

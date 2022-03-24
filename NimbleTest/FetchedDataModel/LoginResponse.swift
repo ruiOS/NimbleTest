@@ -10,10 +10,10 @@ import Foundation
 // MARK: - LoginResponse
 ///Data Repsonse of Login urlSession
 
-struct LoginResponse: Codable, ErrorResponseProtocol {
+struct LoginResponse: Codable, ResponseDataProtocol {
 
     ///Data Class consisting of Data
-    let data: DataClass?
+    var data: DataClass?
 
     ///Errors if thrown
     var errors: [ErrorModel]?

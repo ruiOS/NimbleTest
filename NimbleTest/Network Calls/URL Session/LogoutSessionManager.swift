@@ -7,10 +7,10 @@
 
 import Foundation
 
-class LogoutSessionManager: BaseURLSessionProtocol, CreateURLRequestProtocol{
+struct LogoutSessionManager: BaseURLSessionProtocol, CreateURLRequestProtocol{
 
     var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
-    
+
     /// method logs out user
     /// - Parameter token: auth token of user
     func logOutUser(forToken token: String?){

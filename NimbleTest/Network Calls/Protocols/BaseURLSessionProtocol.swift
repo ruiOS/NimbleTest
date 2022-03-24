@@ -11,7 +11,7 @@ import Foundation
 /// baseDomainURL for all nimble apis
 private let baseDomainURLString = "https://survey-api.nimblehq.co"
 
-typealias ErrorHandleBlock = ((AppErrors)->Void)
+typealias ErrorHandleBlock = ((NetworkCallError)->Void)
 
 ///Base URL Session Protocol consisting of common url session methods
 protocol BaseURLSessionProtocol{
@@ -31,7 +31,7 @@ protocol BaseURLSessionProtocol{
 }
 
 extension BaseURLSessionProtocol{
-    
+
     /// Creates string for given api using base domain
     /// - Parameter api: api for string creation
     /// - Returns: api after appending domain
@@ -48,7 +48,7 @@ extension BaseURLSessionProtocol{
                      !data.isEmpty{
                 completionBlock?(data)
             }else{
-                errorBlock?(.generalError)
+                errorBlock?(.noDataPresent)
             }
         }
         dataTask.resume()

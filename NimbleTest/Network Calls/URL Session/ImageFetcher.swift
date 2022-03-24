@@ -7,15 +7,18 @@
 
 import Foundation
 
-class ImageFetcher: CreateURLRequestProtocol{
-    
+struct ImageFetcher: CreateURLRequestProtocol{
+
     /// method fetches image for given url
     /// - Parameters:
     ///   - urlString: url dtring of the image
     ///   - errorBlock: error block executes when error is thrown
     ///   - completionBlock: completion block on fetching image
-    func fetchImage(forURL urlString: String, errorBlock: @escaping ErrorHandleBlock, completionBlock: @escaping ((Data)->Void)){
-        guard let url = URL(string: urlString) else {return}
+    func fetchImage(forURL urlString: String, isHighQualityImageRequored: Bool = true, errorBlock: @escaping ErrorHandleBlock, completionBlock: @escaping ((Data)->Void)){
+
+        let appendStringForURL = isHighQualityImageRequored ? "l" : ""
+
+        guard let url = URL(string: urlString + appendStringForURL) else {return}
         let urlRequest = createURLRequest(withurl: url, withHTTPMethod: .get)
 
         let session = URLSession(configuration: .default)
@@ -26,7 +29,7 @@ class ImageFetcher: CreateURLRequestProtocol{
                      !data.isEmpty{
                 completionBlock(data)
             }else{
-                errorBlock(.generalError)
+                errorBlock(.noDataPresent)
             }
         }
         dataTask.resume()

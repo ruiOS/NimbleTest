@@ -7,18 +7,9 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol {
+class LoginViewController: NimbleViewController, NetworkCallErrorProtcol, LoaderProtocol, DisplayAlertProtocol, DataFetchErrorProtocol {
 
     //MARK: - Views
-    ///ImageView on the backGround of the ViewController
-    ///shows lauchscreen image
-    private let backGroundImageView: UIImageView = {
-        let tempImageView = UIImageView()
-        tempImageView.translatesAutoresizingMaskIntoConstraints = false
-        tempImageView.image = UIImage(named: "LaunchScreenImage")
-        tempImageView.contentMode = .scaleAspectFill
-        return tempImageView
-    }()
 
     ///imageView containing the logo of nimble
     private let nimbleLogoImageView: UIImageView = {
@@ -129,6 +120,7 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
     ///returns if animation is required for view
     private let isAnimationRequired: Bool
 
+    var networkDataParser = NetworkDataParser()
     //MARK: - Init
 
     /// creates LoginViewController object
@@ -156,7 +148,7 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
         }
 
         //Add Views
-        addBackGroundImage()
+        addBackGroundImageView()
         addNimbleLogoImageView()
         addloginView()
         addEmailTextField()
@@ -202,16 +194,9 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
 
     //MARK: - Add Views
 
-    ///adds background image to view and set constraints
-    private func addBackGroundImage(){
-        self.view.addSubview(backGroundImageView)
-
-        NSLayoutConstraint.activate([
-            backGroundImageView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            backGroundImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            backGroundImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            backGroundImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        ])
+    override func addBackGroundImageView(asZoomIn isZoomIn: Bool = false) {
+        super.addBackGroundImageView(asZoomIn: isZoomIn)
+        self.backGroundImageView.image = UIImage(named: "LaunchScreenImage")
     }
 
     ///adds nimble logo image to view and set constraints
@@ -370,30 +355,38 @@ class LoginViewController: UIViewController, ErrorHandleProtocol, LoaderProtocol
         view.layoutIfNeeded()
     }
 
-    //MARK: - Authentication
+    //MARK: - Login Methods
     ///called when loginButton is pressed. Checks and perform url session to login
     @objc fileprivate func loginButtonPressed(){
-        self.view.endEditing(true)
-        guard let email = loginViewModel.data.value.email.text,
-              let password = loginViewModel.data.value.password.text,
-              loginViewModel.data.value.isLoginEnabled else {
-            handle(error: .noDataFound)
-            return
-        }
-
-        showHud()
 
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let weakSelf = self else {
                 return
             }
-            weakSelf.loginSessionManager.getLoginDetails(emailID: email, password: password) { [weak self] in
-                DispatchQueue.main.async {
-                        AppDelegate.shared?.window?.rootViewController = SurveyListViewController()
-                }
-            } errorBlock: { [weak self] error in
-                self?.handle(error: error)
+            guard let email = weakSelf.loginViewModel.data.value.email.text,
+                  let password = weakSelf.loginViewModel.data.value.password.text,
+                  weakSelf.loginViewModel.data.value.isLoginEnabled else {
+                weakSelf.displayAlert(withTitle: nil, withMessage: AppStrings.error_dataInadequate)
+                return
             }
+
+            weakSelf.showHud()
+
+            weakSelf.loginSessionManager.getLoginDetails(emailID: email, password: password) { loginRespone in
+                weakSelf.networkDataParser.parse(Data: loginRespone) { responseData in
+                    DispatchQueue.global(qos: .background).sync {
+                        KeyChainManager.shared.save(keyChainData: responseData.attributes)
+                    }
+                    DispatchQueue.main.async {
+                        AppDelegate.shared?.window?.rootViewController = SurveyListViewController()
+                    }
+                } errorBlock: { error in
+                    weakSelf.handle(dataFetchError: error)
+                }
+            } errorBlock: { error in
+                weakSelf.handle(networkCallError: error)
+            }
+            
         }
     }
 

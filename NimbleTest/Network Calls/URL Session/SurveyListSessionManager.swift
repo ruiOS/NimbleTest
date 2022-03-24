@@ -8,16 +8,18 @@
 import Foundation
 
 ///Network Manager to handle Login
-class SurveyListSessionManager: NimbleURLSessionBaseClass, QueryItemsProtocol, FetchAuthTokenProtocol{
+struct SurveyListSessionManager: NimbleURLSessionBaseProtocol, QueryItemsProtocol{
 
-    /// method fetches login/keychain details for the uploaded parameters
+    var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
+
+    /// method fetches login details for the uploaded parameters
     /// - Parameters:
     ///   - emailID: emailID of the user
     ///   - password: Password of the user
     ///   - successBlock: block called on comletion
     ///   - errorBlock: block called if error is thrown
-    func getSurveyDetails(successBlock: @escaping ((SurveyList)-> Void), errorBlock: @escaping ErrorHandleBlock){
-        fetchDataForApi(api: "%@/api/v1/surveys", successBlock: successBlock, errorBlock: errorBlock)
+    func getSurveyDetails(usingAuthToken authToken: String, successBlock: @escaping ((SurveyList)-> Void), errorBlock: @escaping ErrorHandleBlock){
+        fetchDataForApi(api: "%@/api/v1/surveys", usingAuthToken: authToken, successBlock: successBlock, errorBlock: errorBlock)
     }
 
 }

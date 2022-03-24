@@ -22,8 +22,8 @@ extension QueryItemsProtocol where Self: BaseURLSessionProtocol{
     func append(queryItems: [URLQueryItem], toURLString urlString: String) -> URL?{
         let url: String = generateURLString(fromapi: urlString)
         
-        let tempQueryItems = queryItems + [ URLQueryItem(name: "client_id", value: "6GbE8dhoz519l2N_F99StqoOs6Tcmm1rXgda4q__rIw"),
-                                   URLQueryItem(name: "client_secret", value: "_ayfIm7BeUAhx2W1OUqi20fwO3uNxfo1QstyKlFCgHw")]
+        let tempQueryItems = queryItems + [ URLQueryItem(name: "client_id", value: "ofzl-2h5ympKa0WqqTzqlVJUiRsxmXQmt5tkgrlWnOE"),
+                                   URLQueryItem(name: "client_secret", value: "lMQb900L-mTeU-FVTCwyhjsfBwRCxwwbCitPob96cuU")]
 
         var urlComps = URLComponents(string: url)
         urlComps?.queryItems = tempQueryItems
