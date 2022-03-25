@@ -14,6 +14,7 @@ class NimbleTestUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        KeyChainManager.shared.deleteKeyChainData()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
@@ -34,11 +35,12 @@ class NimbleTestUITests: XCTestCase {
     func testLoginTestCases(){
         checkLoginSetUp()
         checkEmptyLogin()
-        //checkInvalidLogin()
-        checkValidLogin()
+        checkInvalidLogin()
     }
 
     private func checkLoginSetUp(){
+        app.launchArguments.append(" KeyChainManager.shared.deleteKeyChainData()")
+
         app.launch()
         let nimbleLogo = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element
         let emailTextField = app.textFields[AppStrings.login_email]
@@ -64,7 +66,7 @@ class NimbleTestUITests: XCTestCase {
         XCTAssertFalse(alert.exists)
     }
 
-    func testCheckInvalidLogin(){
+    func checkInvalidLogin(){
         app.launch()
         let emailTextField = app.textFields[AppStrings.login_email]
         emailTextField.typeText("Invalid Email")
@@ -78,57 +80,15 @@ class NimbleTestUITests: XCTestCase {
         XCTAssert(hud.exists)
 
        let alert = XCUIApplication().alerts.scrollViews.otherElements.buttons["Ok"]
-//        let alert = app.alerts["Authentication Error"]
         expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: alert)
         waitForExpectations(timeout: 15)
         
-//        elementsQuery.buttons["Ok"].tap()
-
         print(app.alerts.keys.description)
                 
         XCTAssert(alert.exists)
-//        let okButton = alert.scrollViews.otherElements.buttons["Ok"]
-//        XCTAssert(okButton.exists)
-
-//        okButton.tap()
-
-//        XCTAssertFalse(alert.exists)
-//        XCTAssertFalse(okButton.exists)
-    }
-
-    func checkValidLogin(){
-        app.launch()
-        let emailTextField = app.textFields[AppStrings.login_email]
-        emailTextField.typeText("dev@nimblehq.co")
-        let passwordSecureTextField = app.secureTextFields[AppStrings.login_password]
-        passwordSecureTextField.tap()
-        passwordSecureTextField.typeText("12345678")
-        let loginButton = app.buttons[AppStrings.login]
-        loginButton.tap()
-
-        let hud = app.otherElements["SVProgressHUD"]
-        XCTAssert(hud.exists)
-
-
-        expectation(for: NSPredicate(format: "exists != 1"), evaluatedWith: emailTextField)
-        waitForExpectations(timeout: 15)
-
-        XCTAssertFalse(emailTextField.exists)
-    }
-
-    func testLauchScreen(){
-        
-        let todayStaticText = app.staticTexts["Today"]
-        XCTAssert(todayStaticText.exists)
-
-        XCTAssert(app.buttons["Arrow"].exists)
-        
-        XCTAssert(app.staticTexts["We'd love ot hear from you!"].exists)
-        
-        XCTAssertFalse(app.staticTexts["Scarlett Bangkok"].exists)
-        
-        app.staticTexts["Wednesday March, 23"].tap()
 
     }
+
+
 
 }
