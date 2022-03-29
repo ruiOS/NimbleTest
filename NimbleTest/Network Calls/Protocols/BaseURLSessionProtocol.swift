@@ -19,7 +19,7 @@ protocol BaseURLSessionProtocol{
     ///sessionDelegateClass to handle sessionDelegate methods
     var sessionDelegate: URLSessionDelegate {get set}
 
-    func generateURLString(fromapi: String)->String
+    func generateURLString(fromapi: String, queryParams: String?)->String
 
     /// perform's url session
     /// - Parameters:
@@ -35,8 +35,11 @@ extension BaseURLSessionProtocol{
     /// Creates string for given api using base domain
     /// - Parameter api: api for string creation
     /// - Returns: api after appending domain
-    func generateURLString(fromapi api: String)->String{
-        String(format: api, baseDomainURLString)
+    func generateURLString(fromapi api: String, queryParams: String? = nil)->String{
+        guard let queryParams = queryParams else {
+            return String(format: api, baseDomainURLString)
+        }
+        return String(format: api, baseDomainURLString, queryParams)
     }
 
     func performURLSession(forURLRequest urlRequest: URLRequest, errorBlock: ErrorHandleBlock?, completionBlock: ((Data) -> Void)?){

@@ -183,6 +183,8 @@ class SurveyListViewController:NimbleViewController, LoaderProtocol, CircleViewP
     ///network layer to logout user
     private let logoutSessionManager = LogoutSessionManager()
 
+    private let surveyDetailFetcher = SurveyDetailFetcher()
+
     private let authFetcher = AuthTokenFetchManager()
 
     private let networkDataParser = NetworkDataParser()
@@ -337,7 +339,7 @@ class SurveyListViewController:NimbleViewController, LoaderProtocol, CircleViewP
 
         group.enter()
 
-        surveyListSessionManager.getSurveyDetails(usingAuthToken: authToken, successBlock: { [weak self] surveyList in
+        surveyListSessionManager.getSurveyList(usingAuthToken: authToken, successBlock: { [weak self] surveyList in
             guard let weakSelf = self else {
                 group.suspend()
                 return
@@ -554,11 +556,35 @@ class SurveyListViewController:NimbleViewController, LoaderProtocol, CircleViewP
     //MARK: - Button Tapped Actions
     /// calls when enter button is tapped
     @objc func enterButtonTapped(){
-        /*
-        let takeSurveyVC = TakeSurveyViewController()
-        takeSurveyVC.modalPresentationStyle = .fullScreen
-        self.present(takeSurveyVC, animated: true)
-         */
+
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let weakSelf = self else {return}
+            let authToken = weakSelf.authFetcher.getToken { [weak self] error in
+                weakSelf.handle(tokenGenerationError: error)
+            }
+
+            DispatchQueue.main.async { [weak self] in
+                weakSelf.showHud()
+            }
+
+            let currentModel = weakSelf.viewModel.surveys[weakSelf.viewModel.currentPage]
+
+            guard let surveyID = currentModel.surveyID,
+                  !authToken.isEmpty else { return }
+
+            weakSelf.surveyDetailFetcher.getSurveyDetails(usingAuthToken: authToken, forSurveyID: surveyID) { [weak self] surveyDetailData in
+                weakSelf.dismissHud()
+                DispatchQueue.main.async { [weak self] in
+                    let takeSurveyVC = TakeSurveyViewController(surveyViewVMProtocol: currentModel, surveyDetailData: surveyDetailData)
+                    takeSurveyVC.modalTransitionStyle = .crossDissolve
+                    takeSurveyVC.modalPresentationStyle = .fullScreen
+                    weakSelf.present(takeSurveyVC, animated: true)
+                }
+
+            } errorBlock: { [weak self] error in
+                weakSelf.handle(networkCallError: error)
+            }
+        }
     }
     
     /// calls when profile button is tapped

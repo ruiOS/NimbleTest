@@ -12,13 +12,13 @@ struct SurveyListSessionManager: NimbleURLSessionBaseProtocol, QueryItemsProtoco
 
     var sessionDelegate: URLSessionDelegate = SSLPinningDelegate()
 
-    /// method fetches login details for the uploaded parameters
+    /// method fetches survey list
     /// - Parameters:
     ///   - emailID: emailID of the user
     ///   - password: Password of the user
     ///   - successBlock: block called on comletion
     ///   - errorBlock: block called if error is thrown
-    func getSurveyDetails(usingAuthToken authToken: String, successBlock: @escaping ((SurveyList)-> Void), errorBlock: @escaping ErrorHandleBlock){
+    func getSurveyList(usingAuthToken authToken: String, successBlock: @escaping ((SurveyList)-> Void), errorBlock: @escaping ErrorHandleBlock){
         fetchDataForApi(api: "%@/api/v1/surveys", usingAuthToken: authToken, successBlock: successBlock, errorBlock: errorBlock)
     }
 

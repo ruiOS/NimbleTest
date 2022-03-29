@@ -64,4 +64,11 @@ extension UIFont{
             return UIFont(name: "NeuzeitSLTStd-Book", size: 20)
         }
     }
+
+    ///font for page number
+    static var pageNumberLabelFont: UIFont?{
+        get{
+            return UIFont(name: "NeuzeitSLTStd-Book", size: 20)
+        }
+    }
 }

@@ -11,6 +11,12 @@
 		770E301427EDFDBC00678B9B /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E1F0027E79C4B00DC004C /* LoginResponse.swift */; };
 		770E301527EDFDC700678B9B /* ResponseDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778365AB27ECDACF00C2ECE2 /* ResponseDataProtocol.swift */; };
 		770E301627EDFDCC00678B9B /* ErrorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7735C9FE27EA56F000E523F5 /* ErrorModel.swift */; };
+		770E302127F230AE00678B9B /* SurveyDetailFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E302027F230AE00678B9B /* SurveyDetailFetcher.swift */; };
+		770E302327F2326F00678B9B /* SurveyDetailDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E302227F2326E00678B9B /* SurveyDetailDataModel.swift */; };
+		770E302527F2557000678B9B /* TakeSurveyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E302427F2557000678B9B /* TakeSurveyViewModel.swift */; };
+		770E302727F25AEC00678B9B /* TakeSurveyIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E302627F25AEC00678B9B /* TakeSurveyIntroView.swift */; };
+		770E302F27F33E1C00678B9B /* SurveyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E302E27F33E1C00678B9B /* SurveyView.swift */; };
+		770E303227F34B8500678B9B /* TakeSurveyIntroVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E303127F34B8500678B9B /* TakeSurveyIntroVM.swift */; };
 		7735C9E527E9A47700E523F5 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7735C9E427E9A47700E523F5 /* SnapshotHelper.swift */; };
 		7735C9E827E9D20D00E523F5 /* SurveyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7735C9E727E9D20D00E523F5 /* SurveyListViewController.swift */; };
 		7735C9EA27E9D43700E523F5 /* FetchAuthTokenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7735C9E927E9D43700E523F5 /* FetchAuthTokenProtocol.swift */; };
@@ -110,6 +116,12 @@
 		262D3C259D3D93E4FF212E13 /* Pods-NimbleTest-NimbleTestUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NimbleTest-NimbleTestUITests.release.xcconfig"; path = "Target Support Files/Pods-NimbleTest-NimbleTestUITests/Pods-NimbleTest-NimbleTestUITests.release.xcconfig"; sourceTree = "<group>"; };
 		338AC726F7C018574499C62F /* Pods-NimbleTestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NimbleTestTests.debug.xcconfig"; path = "Target Support Files/Pods-NimbleTestTests/Pods-NimbleTestTests.debug.xcconfig"; sourceTree = "<group>"; };
 		39398282B6CE8BB9FD19729E /* Pods_NimbleTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NimbleTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		770E302027F230AE00678B9B /* SurveyDetailFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyDetailFetcher.swift; sourceTree = "<group>"; };
+		770E302227F2326E00678B9B /* SurveyDetailDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyDetailDataModel.swift; sourceTree = "<group>"; };
+		770E302427F2557000678B9B /* TakeSurveyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeSurveyViewModel.swift; sourceTree = "<group>"; };
+		770E302627F25AEC00678B9B /* TakeSurveyIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeSurveyIntroView.swift; sourceTree = "<group>"; };
+		770E302E27F33E1C00678B9B /* SurveyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyView.swift; sourceTree = "<group>"; };
+		770E303127F34B8500678B9B /* TakeSurveyIntroVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeSurveyIntroVM.swift; sourceTree = "<group>"; };
 		7735C9E427E9A47700E523F5 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		7735C9E727E9D20D00E523F5 /* SurveyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyListViewController.swift; sourceTree = "<group>"; };
 		7735C9E927E9D43700E523F5 /* FetchAuthTokenProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchAuthTokenProtocol.swift; sourceTree = "<group>"; };
@@ -226,6 +238,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		770E303027F34B6E00678B9B /* TakeSurveyViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				770E302427F2557000678B9B /* TakeSurveyViewModel.swift */,
+				770E303127F34B8500678B9B /* TakeSurveyIntroVM.swift */,
+			);
+			path = TakeSurveyViewModels;
+			sourceTree = "<group>";
+		};
 		7735C9E627E9D1C100E523F5 /* Surveys */ = {
 			isa = PBXGroup;
 			children = (
@@ -253,6 +274,7 @@
 				776E1F0027E79C4B00DC004C /* LoginResponse.swift */,
 				7735C9FC27EA56CF00E523F5 /* SurveyList.swift */,
 				7783657027EB03CC00C2ECE2 /* UserData.swift */,
+				770E302227F2326E00678B9B /* SurveyDetailDataModel.swift */,
 			);
 			path = FetchedDataModel;
 			sourceTree = "<group>";
@@ -310,6 +332,7 @@
 				7735CA0027EA581A00E523F5 /* SurveyListSessionManager.swift */,
 				7783656C27EA81E500C2ECE2 /* ImageFetcher.swift */,
 				7783658427EBA6D100C2ECE2 /* LogoutSessionManager.swift */,
+				770E302027F230AE00678B9B /* SurveyDetailFetcher.swift */,
 			);
 			path = "URL Session";
 			sourceTree = "<group>";
@@ -492,6 +515,8 @@
 			isa = PBXGroup;
 			children = (
 				778365C527ED32C400C2ECE2 /* TakeSurveyViewController.swift */,
+				770E302627F25AEC00678B9B /* TakeSurveyIntroView.swift */,
+				770E302E27F33E1C00678B9B /* SurveyView.swift */,
 			);
 			path = TakeSurvey;
 			sourceTree = "<group>";
@@ -513,6 +538,7 @@
 				7735C9EF27E9EB9B00E523F5 /* SurveyListViewModel.swift */,
 				7735C9F127E9EBD300E523F5 /* SurveyViewVM.swift */,
 				7783657C27EB7DBA00C2ECE2 /* MenuControllerViewModel.swift */,
+				770E303027F34B6E00678B9B /* TakeSurveyViewModels */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -796,13 +822,17 @@
 				779B1D8527E8DC0A0033AF67 /* Box.swift in Sources */,
 				778365BF27ED2A6300C2ECE2 /* NetworkCallError.swift in Sources */,
 				7735C9FF27EA56F000E523F5 /* ErrorModel.swift in Sources */,
+				770E302327F2326F00678B9B /* SurveyDetailDataModel.swift in Sources */,
 				7783658327EB8D7600C2ECE2 /* CircleViewProtocol.swift in Sources */,
 				7783658527EBA6D100C2ECE2 /* LogoutSessionManager.swift in Sources */,
+				770E302527F2557000678B9B /* TakeSurveyViewModel.swift in Sources */,
+				770E302F27F33E1C00678B9B /* SurveyView.swift in Sources */,
 				778365A627ECC88500C2ECE2 /* TokenGenerationErrorProtocol.swift in Sources */,
 				779B1D8E27E8F8110033AF67 /* SSLPinningDelegate.swift in Sources */,
 				7783658927EBBBA200C2ECE2 /* HTTPMethod.swift in Sources */,
 				779B1D8727E8DFD30033AF67 /* TextFieldEditingEventsDelegate.swift in Sources */,
 				7783658D27EBBBD900C2ECE2 /* QueryItemsProtocol.swift in Sources */,
+				770E302727F25AEC00678B9B /* TakeSurveyIntroView.swift in Sources */,
 				7783659127EBBC3600C2ECE2 /* AuthValidationProtocol.swift in Sources */,
 				7735C9FA27EA4EE800E523F5 /* UIView+Skeletonable.swift in Sources */,
 				7735C9F027E9EB9B00E523F5 /* SurveyListViewModel.swift in Sources */,
@@ -812,6 +842,7 @@
 				778365AA27ECDA4600C2ECE2 /* NetworkDataParser.swift in Sources */,
 				77DD896C27E7BCC4000550CD /* BaseURLSessionProtocol.swift in Sources */,
 				778365C627ED32C400C2ECE2 /* TakeSurveyViewController.swift in Sources */,
+				770E302127F230AE00678B9B /* SurveyDetailFetcher.swift in Sources */,
 				7780618E27E75EBB000BDCF8 /* LoginViewController.swift in Sources */,
 				779B1D8927E8E4260033AF67 /* KeyChainManager.swift in Sources */,
 				778365A027ECBDAA00C2ECE2 /* DisplayAlertProtocol.swift in Sources */,
@@ -836,6 +867,7 @@
 				779B1D9227E91DD50033AF67 /* AuthTokenFetchManager.swift in Sources */,
 				776E1EFE27E79BA300DC004C /* LoginSessionManager.swift in Sources */,
 				7783656F27EB02C500C2ECE2 /* UserDetailsFetcher.swift in Sources */,
+				770E303227F34B8500678B9B /* TakeSurveyIntroVM.swift in Sources */,
 				7780618A27E75EBB000BDCF8 /* AppDelegate.swift in Sources */,
 				778365A227ECC51400C2ECE2 /* DataFetchErrorProtocol.swift in Sources */,
 				7783657127EB03CC00C2ECE2 /* UserData.swift in Sources */,

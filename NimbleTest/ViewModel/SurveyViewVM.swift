@@ -7,7 +7,17 @@
 
 import Foundation
 
-class SurveyViewVM {
+protocol SurveyViewVMProtocol{
+    var backGroundImageData: Data? {get set}
+
+    var title: String? {get set}
+
+    var description: String? {get set}
+
+    var surveyID: String? {get set}
+}
+
+class SurveyViewVM: SurveyViewVMProtocol{
 
     var backGroundImageData: Data?
 

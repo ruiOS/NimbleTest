@@ -18,8 +18,9 @@ extension NimbleURLSessionBaseProtocol{
     ///   - api: api to construct url
     ///   - successBlock: block called on completion
     ///   - errorBlock: block called if error is thrown
-    func fetchDataForApi<T:Codable & ResponseDataProtocol>(api: String, usingAuthToken authToken: String, successBlock: @escaping ((T)-> Void), errorBlock: @escaping ErrorHandleBlock){
-        let urlString = generateURLString(fromapi: api)
+    func fetchDataForApi<T:Codable & ResponseDataProtocol>(api: String, queryParams: String? =  nil, usingAuthToken authToken: String, successBlock: @escaping ((T)-> Void), errorBlock: @escaping ErrorHandleBlock){
+
+        let urlString = generateURLString(fromapi: api, queryParams: queryParams)
 
         guard let url = URL(string: urlString) else {
             errorBlock(.urlCantBeGenerated)
@@ -32,10 +33,8 @@ extension NimbleURLSessionBaseProtocol{
             do{
                 let responseObject: T = try JSONDecoder().decode(T.self, from: data)
                 successBlock(responseObject)
-            }
-            catch{
+            } catch {
                 errorBlock(.dataParseError(error.localizedDescription))
-                return
             }
         }
     }

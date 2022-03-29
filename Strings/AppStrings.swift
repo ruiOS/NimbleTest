@@ -75,4 +75,8 @@ struct AppStrings{
 
     @LocalisedString(key: "nimbleTest.ios.surveyView.today", comment: "Today")
     static var surveyView_today: String
+
+    @LocalisedString(key: "nimbleTest.ios.surveyDetailView.startSurvey", comment: "Start Survey")
+    static var surveyDetailView_today: String
+
 }
