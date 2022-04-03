@@ -27,6 +27,7 @@ class SurveyListViewModel: UserViewModelProtocol{
     var dateString: String  = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE MMMM, dd"
+        dateFormatter.locale = Locale(identifier: "en")
         return dateFormatter.string(from: Date())
     }()
 
